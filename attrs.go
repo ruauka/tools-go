@@ -14,7 +14,7 @@ var (
 	ErrNotPointer          = errors.New("struct passed not by pointer")
 )
 
-// setValue - set struct new field.
+// setValue - set struct new field
 func setValue(obj interface{}, fieldName string, newValue interface{}) error {
 	objValue := reflect.ValueOf(obj)
 
@@ -44,7 +44,7 @@ func setValue(obj interface{}, fieldName string, newValue interface{}) error {
 	return nil
 }
 
-// getValue - get struct field value.
+// getValue - get struct field value
 func getValue(obj interface{}, fieldName string) (interface{}, error) {
 	objValue := reflect.ValueOf(obj)
 
