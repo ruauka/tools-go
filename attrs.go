@@ -1,4 +1,4 @@
-package lib
+package attrs_go
 
 import (
 	"errors"
