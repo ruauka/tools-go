@@ -2,7 +2,7 @@ package lib
 
 import (
 	"errors"
-	"log"
+	"fmt"
 	"reflect"
 )
 
@@ -61,7 +61,7 @@ func getValue(obj interface{}, fieldName string) (interface{}, error) {
 	return field.Elem().Interface(), nil
 }
 
-func SetStructAttrs(curObj, newObj interface{}) {
+func SetStructAttrs(curObj, newObj interface{}) error {
 	elem := reflect.ValueOf(newObj)
 
 	for i := 0; i < elem.NumField(); i++ {
@@ -74,11 +74,13 @@ func SetStructAttrs(curObj, newObj interface{}) {
 
 		fieldValue, err := getValue(newObj, fieldName)
 		if err != nil {
-			log.Fatalf("Err in GetValue: %v", err)
+			return fmt.Errorf("err in getValue: %v", err)
 		}
 
 		if err := setValue(curObj, fieldName, fieldValue); err != nil {
-			log.Fatalf("Err in SetValue: %v", err)
+			return fmt.Errorf("err in setValue: %v", err)
 		}
 	}
+
+	return nil
 }
