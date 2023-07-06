@@ -1,4 +1,4 @@
-package attrs_go
+package lib
 
 import (
 	"errors"
@@ -52,12 +52,13 @@ func getValue(obj interface{}, fieldName string) (interface{}, error) {
 		return nil, ErrNotStruct
 	}
 
-	field := reflect.ValueOf(obj).FieldByName(fieldName)
+	field := objValue.FieldByName(fieldName)
 	if !field.IsValid() {
 		return nil, ErrFieldNotInStruct
 	}
 
-	return field.Interface(), nil
+	// Elem() - field ptr
+	return field.Elem().Interface(), nil
 }
 
 func SetStructAttrs(curObj, newObj interface{}) {
