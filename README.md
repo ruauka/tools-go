@@ -1,1 +1,1 @@
-go get github.com/ruauka/attrs-go@v1.0.2
+go get github.com/ruauka/attrs-go@v1.0.0
