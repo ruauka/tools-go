@@ -1,7 +1,8 @@
-package attrs_go
+package attrs_go //nolint:revive,stylecheck
 
 import "errors"
 
+// lib errors.
 var (
 	ErrNotStruct           = errors.New("not a struct")
 	ErrFieldNotInStruct    = errors.New("field not in struct")
