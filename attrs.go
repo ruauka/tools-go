@@ -1,22 +1,15 @@
 package attrs_go
 
 import (
-	"errors"
 	"fmt"
 	"reflect"
 )
 
-var (
-	ErrNotStruct           = errors.New("not a struct")
-	ErrFieldNotInStruct    = errors.New("field not in struct")
-	ErrUnexportedField     = errors.New("field not exported")
-	ErrWrongFieldValueType = errors.New("wrong field value type")
-	ErrNotPointer          = errors.New("struct passed not by pointer")
-)
-
-// setValue - set struct new field.
-func setValue(obj interface{}, fieldName string, newValue interface{}) error {
-	objValue := reflect.ValueOf(obj)
+func SetAttr(obj interface{}, fieldName string, newValue interface{}) error {
+	var (
+		objValue = reflect.ValueOf(obj)
+		field    reflect.Value
+	)
 
 	if objValue.Kind() != reflect.Ptr {
 		return ErrNotPointer
@@ -26,7 +19,13 @@ func setValue(obj interface{}, fieldName string, newValue interface{}) error {
 		return ErrNotStruct
 	}
 
-	field := objValue.Elem().FieldByName(fieldName)
+	objValue = objValue.Elem().FieldByName(fieldName)
+	if objValue.Kind() == reflect.Ptr {
+		field = objValue.Elem()
+	} else {
+		field = objValue
+	}
+
 	if !field.IsValid() {
 		return ErrFieldNotInStruct
 	}
@@ -44,8 +43,8 @@ func setValue(obj interface{}, fieldName string, newValue interface{}) error {
 	return nil
 }
 
-// getValue - get struct field value.
-func getValue(obj interface{}, fieldName string) (interface{}, error) {
+// GetAttr - get struct field value.
+func GetAttr(obj interface{}, fieldName string) (interface{}, error) {
 	objValue := reflect.ValueOf(obj)
 
 	if objValue.Kind() != reflect.Struct {
@@ -57,8 +56,15 @@ func getValue(obj interface{}, fieldName string) (interface{}, error) {
 		return nil, ErrFieldNotInStruct
 	}
 
-	// Elem() - field ptr
-	return field.Elem().Interface(), nil
+	if !field.CanInterface() {
+		return nil, ErrUnexportedField
+	}
+
+	if field.Kind() == reflect.Ptr {
+		return field.Elem().Interface(), nil
+	}
+
+	return field.Interface(), nil
 }
 
 func SetStructAttrs(curObj, newObj interface{}) error {
@@ -66,19 +72,19 @@ func SetStructAttrs(curObj, newObj interface{}) error {
 
 	for i := 0; i < elem.NumField(); i++ {
 		field := elem.Field(i)
-		if field.IsNil() {
+		if field.Kind() == reflect.Ptr && field.IsNil() {
 			continue
 		}
 
 		fieldName := elem.Type().Field(i).Name
 
-		fieldValue, err := getValue(newObj, fieldName)
+		fieldValue, err := GetAttr(newObj, fieldName)
 		if err != nil {
-			return fmt.Errorf("err in getValue: %v", err)
+			return fmt.Errorf("err in GetAttr: %v", err)
 		}
 
-		if err := setValue(curObj, fieldName, fieldValue); err != nil {
-			return fmt.Errorf("err in setValue: %v", err)
+		if err := SetAttr(curObj, fieldName, fieldValue); err != nil {
+			return fmt.Errorf("err in SetAttr: %v", err)
 		}
 	}
 
