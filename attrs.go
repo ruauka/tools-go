@@ -1,4 +1,4 @@
-// Package attrs_go - reflect helper
+// Package attrs_go - reflect helper.
 package attrs_go //nolint:revive,stylecheck
 
 import (
