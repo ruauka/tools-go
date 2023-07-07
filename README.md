@@ -42,9 +42,9 @@ type User struct {
     Username string
 }
 
-u := User{Username: "username value"}
+u := &User{Username: "username value"}
 
-if err := attrs_go.SetAttr(&u, "Username", "new username value"); err != nil {
+if err := attrs_go.SetAttr(u, "Username", "new username value"); err != nil {
     fmt.Println(err)
 }
 
@@ -76,20 +76,21 @@ type NewUser struct {
 user := &User{
     Username: "username",
     Age:      30,
-    Married:  nil,
+    Married: true
 }
 
 newUserName := "new_username"
 newUser := NewUser{
     Username: &newUserName,
     Age:      35,
+    Married:  nil,
 }
 
-fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // username, 30, false
+fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // username, 30, true
 
 if err := attrs_go.SetStructAttrs(user, newUser); err != nil {
     fmt.Println(err)
 }
 
-fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // new_username, 35, false
+fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // new_username, 35, true
 ```
