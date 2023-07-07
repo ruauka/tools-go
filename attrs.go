@@ -7,8 +7,7 @@ import (
 )
 
 // GetAttr - get struct field value.
-// Struct fields can be ptr or value
-// Args: obj, fieldName, newValue - value param.
+// Args: obj, fieldName - value param. Struct fields can be ptr or value.
 func GetAttr(obj interface{}, fieldName string) (interface{}, error) {
 	// to reflect value
 	objValue := reflect.ValueOf(obj)
@@ -34,9 +33,8 @@ func GetAttr(obj interface{}, fieldName string) (interface{}, error) {
 	return field.Interface(), nil
 }
 
-// SetAttr - setting the structure field.
-// Struct fields can be ptr or value
-// Args: obj - ptr param.
+// SetAttr - set new value on structure field.
+// Args: obj - ptr param. Struct fields can be ptr or value.
 // Args: fieldName, newValue - value param.
 func SetAttr(obj interface{}, fieldName string, newValue interface{}) error {
 	var (
@@ -78,8 +76,7 @@ func SetAttr(obj interface{}, fieldName string, newValue interface{}) error {
 	return nil
 }
 
-// SetStructAttrs - updates the fields of the current structure with the values of the fields of the new structure.
-// Struct fields can be ptr or value
+// SetStructAttrs - updates current structure fields with the values of the new structure fields.
 // Args: curObj - ptr param. Struct fields can be ptr or value.
 // Args: newObj - value param. Struct fields can be ptr or value.
 func SetStructAttrs(curObj, newObj interface{}) error {
