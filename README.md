@@ -10,8 +10,8 @@ go get github.com/ruauka/attrs-go@v1.0.4
 <ins>**GetAttr**</ins> - get struct field value. 
 
 Args:
- - obj, fieldName - value param. Struct fields can be ptr or value.
-
+ - obj: struct, fields can be ptr or value.
+ - fieldName: value param.
 ```go
 func GetAttr(obj interface{}, fieldName string) (interface{}, error)
 ```
@@ -30,8 +30,8 @@ fmt.Println(value) // username value
 <ins>**SetAttr**</ins>  - set new value on structure field.
 
 Args:
-- obj - ptr param. Struct fields can be ptr or value.
-- fieldName, newValue - value param.
+- obj: struct - ptr param. Struct fields can be ptr or value.
+- fieldName, newValue: value param.
 
 ```go
 func SetAttr(obj interface{}, fieldName string, newValue interface{}) error
@@ -54,8 +54,8 @@ fmt.Println(u.Username) // new username value
 <ins>**SetStructAttrs**</ins>  - updates current structure fields with the values of the new structure fields.
 
 Args:
-- curObj - ptr param. Struct fields can be ptr or value.
-- newObj - value param. Struct fields can be ptr or value.
+- curObj: struct - ptr param. Struct fields can be ptr or value.
+- newObj: struct - value param. Struct fields can be ptr or value.
 
 ```go
 func SetStructAttrs(curObj, newObj interface{}) error
@@ -99,7 +99,8 @@ fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // new_usernam
 <ins>**RoundUpFloatStruct**</ins>  - round up float struct fields to certain precision.
 
 Args:
-- obj - ptr param. Struct fields can be value, not ptr.
+- obj: struct - ptr param. Struct fields can be value, not ptr.
+- precision: round to.
 
 Constraint:
 
