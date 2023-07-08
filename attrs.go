@@ -7,7 +7,7 @@ import (
 	"reflect"
 )
 
-// float bit size
+// float bit size.
 const (
 	bitSize32 = 32
 	bitSize64 = 64

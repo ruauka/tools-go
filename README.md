@@ -3,7 +3,7 @@ Tool for working with structure fields.
 
 ## Install
 ```bash
-go get github.com/ruauka/attrs-go@v1.0.6
+go get github.com/ruauka/attrs-go@v1.0.7
 ```
 
 ## Usage
@@ -142,7 +142,7 @@ fmt.Printf("%+v\n", *foo)
 //Field7:7 Field8:field8
 //}
 
-if err := lib.RoundUpFloatStruct(foo, 3); err != nil {
+if err := attrs_go.RoundUpFloatStruct(foo, 3); err != nil {
     fmt.Println(err)
 }
 
