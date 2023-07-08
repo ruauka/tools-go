@@ -7,6 +7,11 @@ import (
 	"reflect"
 )
 
+const (
+	bitSize32 = 32
+	bitSize64 = 64
+)
+
 // GetAttr - get struct field value.
 // Args: obj, fieldName - value param. Struct fields can be ptr or value.
 func GetAttr(obj interface{}, fieldName string) (interface{}, error) {
@@ -111,15 +116,17 @@ func SetStructAttrs(curObj, newObj interface{}) error {
 	return nil
 }
 
+// RoundUp - float64 rounder to certain precision.
 func RoundUp(value float64, precision int) float64 {
 	return math.Ceil(value*(math.Pow10(precision))) / math.Pow10(precision)
 }
 
+// iterRound - round any float. Private func.
 func iterRound(field reflect.Value, precision int, bitSize int) {
 	for j := 0; j < field.Len(); j++ {
 		field := field.Index(j)
-
-		if bitSize == 64 {
+		// bitSize check
+		if bitSize == bitSize64 {
 			field.Set(reflect.ValueOf(RoundUp(field.Float(), precision)))
 			continue
 		}
@@ -128,7 +135,11 @@ func iterRound(field reflect.Value, precision int, bitSize int) {
 	}
 }
 
-func RoundUpFloatFields(obj interface{}, precision int) error { //nolint:funlen
+// RoundUpFloatStruct - round up float struct fields to certain precision
+// - Simple floats
+// - Array and slice
+// Args: obj - ptr param. Struct fields can be value, not ptr.
+func RoundUpFloatStruct(obj interface{}, precision int) error {
 	objValue := reflect.ValueOf(obj)
 	// struct ptr check
 	if objValue.Kind() != reflect.Ptr {
@@ -138,7 +149,7 @@ func RoundUpFloatFields(obj interface{}, precision int) error { //nolint:funlen
 	if objValue.Elem().Kind() != reflect.Struct {
 		return ErrNotStruct
 	}
-
+	// get value from ptr
 	objValue = objValue.Elem()
 
 	for i := 0; i < objValue.NumField(); i++ {
@@ -147,23 +158,25 @@ func RoundUpFloatFields(obj interface{}, precision int) error { //nolint:funlen
 		if !field.CanSet() {
 			return ErrUnexportedField
 		}
-
+		// float types check
 		switch field.Kind() {
+		// simple float
 		case reflect.Float64, reflect.Float32:
 			if field.Kind() == reflect.Float64 {
 				field.Set(reflect.ValueOf(RoundUp(field.Float(), precision)))
 				break
 			}
 			field.Set(reflect.ValueOf(float32(RoundUp(field.Float(), precision))))
+		// array and slice float
 		case reflect.Array, reflect.Slice:
 			if field.Len() == 0 {
 				break
 			}
 			if field.Index(0).Kind() == reflect.Float64 {
-				iterRound(field, precision, 64)
+				iterRound(field, precision, bitSize64)
 				break
 			}
-			iterRound(field, precision, 32)
+			iterRound(field, precision, bitSize32)
 		}
 	}
 

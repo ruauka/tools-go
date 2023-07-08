@@ -52,6 +52,7 @@ fmt.Println(u.Username) // new username value
 ```
 
 <ins>**SetStructAttrs**</ins>  - updates current structure fields with the values of the new structure fields.
+
 Args:
 - curObj - ptr param. Struct fields can be ptr or value.
 - newObj - value param. Struct fields can be ptr or value.
@@ -93,4 +94,62 @@ if err := attrs_go.SetStructAttrs(user, newUser); err != nil {
 }
 
 fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // new_username, 35, true
+```
+
+<ins>**RoundUpFloatStruct**</ins>  - round up float struct fields to certain precision.
+
+Args:
+- obj - ptr param. Struct fields can be value, not ptr.
+
+Constraint:
+
+- simple floats
+- array and slice
+
+```go
+func RoundUpFloatStruct(obj interface{}, precision int) error
+```
+
+```go
+type Foo struct {
+    Field1 float32
+    Field2 float64
+    Field3 []float32
+    Field4 []float64
+    Field5 [3]float32
+    Field6 [3]float64
+    Field7 int // will be the same
+    Field8 string // will be the same
+}
+
+foo := &Foo{
+    Field1: 1.1111,
+    Field2: 2.2222,
+    Field3: []float32{1.1111, 2.2222, 3.3333},
+    Field4: []float64{4.4444, 5.4444, 7.7777},
+    Field5: [3]float32{1.1111, 2.2222, 3.3333},
+    Field6: [3]float64{4.4444, 5.4444, 7.7777},
+    Field7: 7,
+    Field8: "field8",
+}
+
+fmt.Printf("%+v\n", *foo)
+// {
+//Field1:1.1111 Field2:2.2222
+//Field3:[1.1111 2.2222 3.3333] Field4:[4.4444 5.4444 7.7777]
+//Field5:[1.1111 2.2222 3.3333] Field6:[4.4444 5.4444 7.7777]
+//Field7:7 Field8:field8
+//}
+
+if err := lib.RoundUpFloatStruct(foo, 3); err != nil {
+    fmt.Println(err)
+}
+
+fmt.Printf("%+v", *foo)
+// {
+//Field1:1.112 Field2:2.223
+//Field3:[1.112 2.223 3.334] Field4:[4.445 5.445 7.778]
+//Field5:[1.112 2.223 3.334] Field6:[4.445 5.445 7.778]
+//Field7:7 Field8:field8
+//}
 ```
