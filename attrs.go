@@ -3,6 +3,7 @@ package attrs_go //nolint:revive,stylecheck
 
 import (
 	"fmt"
+	"math"
 	"reflect"
 )
 
@@ -104,6 +105,65 @@ func SetStructAttrs(curObj, newObj interface{}) error {
 		// get curObj field value
 		if err := SetAttr(curObj, fieldName, fieldValue); err != nil {
 			return fmt.Errorf("err in SetAttr: %w", err)
+		}
+	}
+
+	return nil
+}
+
+func RoundUp(value float64, precision int) float64 {
+	return math.Ceil(value*(math.Pow10(precision))) / math.Pow10(precision)
+}
+
+func iterRound(field reflect.Value, precision int, bitSize int) {
+	for j := 0; j < field.Len(); j++ {
+		field := field.Index(j)
+
+		if bitSize == 64 {
+			field.Set(reflect.ValueOf(RoundUp(field.Float(), precision)))
+			continue
+		}
+
+		field.Set(reflect.ValueOf(float32(RoundUp(field.Float(), precision))))
+	}
+}
+
+func RoundUpFloatFields(obj interface{}, precision int) error { //nolint:funlen
+	objValue := reflect.ValueOf(obj)
+	// struct ptr check
+	if objValue.Kind() != reflect.Ptr {
+		return ErrNotPointer
+	}
+	// is struct check
+	if objValue.Elem().Kind() != reflect.Struct {
+		return ErrNotStruct
+	}
+
+	objValue = objValue.Elem()
+
+	for i := 0; i < objValue.NumField(); i++ {
+		field := objValue.Field(i)
+		// is field exported
+		if !field.CanSet() {
+			return ErrUnexportedField
+		}
+
+		switch field.Kind() {
+		case reflect.Float64, reflect.Float32:
+			if field.Kind() == reflect.Float64 {
+				field.Set(reflect.ValueOf(RoundUp(field.Float(), precision)))
+				break
+			}
+			field.Set(reflect.ValueOf(float32(RoundUp(field.Float(), precision))))
+		case reflect.Array, reflect.Slice:
+			if field.Len() == 0 {
+				break
+			}
+			if field.Index(0).Kind() == reflect.Float64 {
+				iterRound(field, precision, 64)
+				break
+			}
+			iterRound(field, precision, 32)
 		}
 	}
 
