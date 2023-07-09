@@ -10,7 +10,7 @@ go get github.com/ruauka/attrs-go@v1.0.7
 <ins>**GetAttr**</ins> - get struct field value. 
 
 Args:
- - obj: struct, fields can be ptr or value.
+ - obj: struct - value param. Fields can be ptr or value.
  - fieldName: value param.
 ```go
 func GetAttr(obj interface{}, fieldName string) (interface{}, error)
