@@ -138,7 +138,7 @@ func TestSetAttr(t *testing.T) {
 
 	for _, testCase := range TestCases {
 		t.Run(testCase.testName, func(t *testing.T) {
-			err := SetAttr(testCase.obj, testCase.fieldName, testCase.newValue)
+			err := SetAttr(testCase.obj, testCase.newValue, testCase.fieldName)
 			require.ErrorIs(t, testCase.expectedErr, err)
 		})
 	}
