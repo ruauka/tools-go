@@ -20,6 +20,10 @@ const (
 func GetAttr(obj interface{}, fieldName string) (interface{}, error) {
 	// to reflect value
 	objValue := reflect.ValueOf(obj)
+	// struct ptr check
+	if objValue.Kind() == reflect.Ptr {
+		return nil, ErrPointerStruct
+	}
 	// is struct check
 	if objValue.Kind() != reflect.Struct {
 		return nil, ErrNotStruct
@@ -54,7 +58,7 @@ func SetAttr(obj interface{}, fieldName string, newValue interface{}) error {
 	)
 	// struct ptr check
 	if objValue.Kind() != reflect.Ptr {
-		return ErrNotPointer
+		return ErrNotPointerStruct
 	}
 	// is struct check
 	if objValue.Elem().Kind() != reflect.Struct {
@@ -92,21 +96,21 @@ func SetAttr(obj interface{}, fieldName string, newValue interface{}) error {
 // - newObj: struct - value param. Struct fields can be ptr or value.
 func SetStructAttrs(curObj, newObj interface{}) error {
 	// to reflect value
-	elem := reflect.ValueOf(newObj)
+	objValue := reflect.ValueOf(newObj)
 	// is struct check
-	if elem.Kind() != reflect.Struct {
+	if objValue.Kind() != reflect.Struct {
 		return ErrNotStruct
 	}
 
-	for i := 0; i < elem.NumField(); i++ {
+	for i := 0; i < objValue.NumField(); i++ {
 		// get field reflect value
-		field := elem.Field(i)
+		field := objValue.Field(i)
 		// is ptr && is ptr nil check
 		if field.Kind() == reflect.Ptr && field.IsNil() {
 			continue
 		}
 		// get newObj field name
-		fieldName := elem.Type().Field(i).Name
+		fieldName := objValue.Type().Field(i).Name
 		// get newObj field value
 		fieldValue, err := GetAttr(newObj, fieldName)
 		if err != nil {
@@ -150,7 +154,7 @@ func RoundUpFloatStruct(obj interface{}, precision int) error {
 	objValue := reflect.ValueOf(obj)
 	// struct ptr check
 	if objValue.Kind() != reflect.Ptr {
-		return ErrNotPointer
+		return ErrNotPointerStruct
 	}
 	// is struct check
 	if objValue.Elem().Kind() != reflect.Struct {

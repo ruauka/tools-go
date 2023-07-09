@@ -8,5 +8,6 @@ var (
 	ErrFieldNotInStruct    = errors.New("field not in struct")
 	ErrUnexportedField     = errors.New("field not exported")
 	ErrWrongFieldValueType = errors.New("wrong field value type")
-	ErrNotPointer          = errors.New("struct passed not by pointer")
+	ErrNotPointerStruct    = errors.New("struct passed not by pointer")
+	ErrPointerStruct       = errors.New("struct passed by pointer")
 )

@@ -3,7 +3,7 @@ Tool for working with structure fields.
 
 ## Install
 ```bash
-go get github.com/ruauka/attrs-go@v1.0.7
+go get github.com/ruauka/attrs-go@v1.0.8
 ```
 
 ## Usage

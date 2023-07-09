@@ -32,6 +32,13 @@ func TestGetAttr(t *testing.T) {
 			testName:    "OK. Ptr field",
 		},
 		{
+			obj:         &struct{ Username string }{Username: name},
+			fieldName:   "Username",
+			expected:    nil,
+			expectedErr: ErrPointerStruct,
+			testName:    "OK. Ptr struct",
+		},
+		{
 			obj:         "not struct arg",
 			fieldName:   "Username",
 			expected:    nil,
@@ -96,7 +103,7 @@ func TestSetAttr(t *testing.T) {
 			obj:         struct{ Username string }{Username: curValue},
 			fieldName:   fieldUsername,
 			newValue:    newValue,
-			expectedErr: ErrNotPointer,
+			expectedErr: ErrNotPointerStruct,
 			testName:    "ERR. Struct passed not by pointer",
 		},
 		{
@@ -347,6 +354,121 @@ func TestSetStructAttrs(t *testing.T) {
 			}
 
 			require.Equal(t, testCase.expected, testCase.curObj)
+		})
+	}
+}
+
+func TestRoundUp(t *testing.T) {
+	TestCases := []struct {
+		value     float64
+		precision int
+		expected  float64
+		testName  string
+	}{
+		{
+			value:     0.123456789,
+			precision: 4,
+			expected:  0.1235,
+			testName:  "OK",
+		},
+	}
+
+	for _, testCase := range TestCases {
+		t.Run(testCase.testName, func(t *testing.T) {
+			result := RoundUp(testCase.value, testCase.precision)
+			require.Equal(t, testCase.expected, result)
+		})
+	}
+}
+
+func TestRoundUpFloatStruct(t *testing.T) {
+	notStruct := "arg not struct"
+
+	type Foo struct {
+		Field1 float32
+		Field2 float64
+		Field3 []float32
+		Field4 []float64
+		Field5 [3]float32
+		Field6 [3]float64
+		Field7 int
+		Field8 string
+	}
+
+	foo := Foo{
+		Field1: 1.1111,
+		Field2: 2.2222,
+		Field3: []float32{1.1111, 2.2222, 3.3333},
+		Field4: []float64{4.4444, 5.5555, 7.7777},
+		Field5: [3]float32{1.1111, 2.2222, 3.3333},
+		Field6: [3]float64{4.4444, 5.5555, 7.7777},
+		Field7: 7,
+		Field8: "field8",
+	}
+
+	expected := Foo{
+		Field1: 1.112,
+		Field2: 2.223,
+		Field3: []float32{1.112, 2.223, 3.334},
+		Field4: []float64{4.445, 5.556, 7.778},
+		Field5: [3]float32{1.112, 2.223, 3.334},
+		Field6: [3]float64{4.445, 5.556, 7.778},
+		Field7: 7,
+		Field8: "field8",
+	}
+
+	TestCases := []struct {
+		obj         interface{}
+		precision   int
+		expected    interface{}
+		expectedErr error
+		testName    string
+	}{
+		{
+			obj:         &foo,
+			precision:   3,
+			expected:    &expected,
+			expectedErr: nil,
+			testName:    "OK",
+		},
+		{
+			obj:         foo,
+			precision:   3,
+			expected:    foo,
+			expectedErr: ErrNotPointerStruct,
+			testName:    "ERR. Struct passed not by pointer",
+		},
+		{
+			obj:         &notStruct,
+			precision:   3,
+			expected:    &notStruct,
+			expectedErr: ErrNotStruct,
+			testName:    "ERR. Arg not struct",
+		},
+		{
+			obj:         &struct{ field1 float64 }{field1: 0},
+			precision:   3,
+			expected:    &struct{ field1 float64 }{field1: 0},
+			expectedErr: ErrUnexportedField,
+			testName:    "ERR. Unexported field",
+		},
+		{
+			obj:         &struct{ Field1 []float64 }{Field1: nil},
+			precision:   3,
+			expected:    &struct{ Field1 []float64 }{Field1: nil},
+			expectedErr: nil,
+			testName:    "OK. Slice len == 0",
+		},
+	}
+
+	for _, testCase := range TestCases {
+		t.Run(testCase.testName, func(t *testing.T) {
+			err := RoundUpFloatStruct(testCase.obj, testCase.precision)
+			if err != nil {
+				require.ErrorIs(t, testCase.expectedErr, err)
+			}
+
+			require.Equal(t, testCase.expected, testCase.obj)
 		})
 	}
 }
