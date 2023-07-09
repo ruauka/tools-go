@@ -44,7 +44,7 @@ type User struct {
 
 u := &User{Username: "username value"}
 
-if err := attrs_go.SetAttr(u, "Username", "new username value"); err != nil {
+if err := attrs_go.SetAttr(u, "new username value", "Username"); err != nil {
     fmt.Println(err)
 }
 
