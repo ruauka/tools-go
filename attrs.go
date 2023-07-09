@@ -50,7 +50,7 @@ func GetAttr(obj interface{}, fieldName string) (interface{}, error) {
 // Args:
 // - obj: struct - ptr param. Struct fields can be ptr or value.
 // - fieldName, newValue: value param.
-func SetAttr(obj interface{}, fieldName string, newValue interface{}) error {
+func SetAttr(obj, newValue interface{}, fieldName string) error {
 	var (
 		// to reflect value
 		objValue = reflect.ValueOf(obj)
@@ -117,7 +117,7 @@ func SetStructAttrs(curObj, newObj interface{}) error {
 			return fmt.Errorf("err in GetAttr: %w", err)
 		}
 		// get curObj field value
-		if err := SetAttr(curObj, fieldName, fieldValue); err != nil {
+		if err := SetAttr(curObj, fieldValue, fieldName); err != nil {
 			return fmt.Errorf("err in SetAttr: %w", err)
 		}
 	}

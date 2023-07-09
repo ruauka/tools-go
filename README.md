@@ -3,7 +3,7 @@ Tool for working with structure fields.
 
 ## Install
 ```bash
-go get github.com/ruauka/attrs-go@v1.0.9
+go get github.com/ruauka/attrs-go@v1.0.10
 ```
 
 ## Usage
@@ -34,7 +34,7 @@ Args:
 - fieldName, newValue: value param.
 
 ```go
-func SetAttr(obj interface{}, fieldName string, newValue interface{}) error
+func SetAttr(obj, newValue interface{}, fieldName string) error
 ```
 
 ```go
