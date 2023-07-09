@@ -3,7 +3,7 @@ Tool for working with structure fields.
 
 ## Install
 ```bash
-go get github.com/ruauka/attrs-go@v1.0.8
+go get github.com/ruauka/attrs-go@v1.0.9
 ```
 
 ## Usage
@@ -127,9 +127,9 @@ foo := &Foo{
     Field1: 1.1111,
     Field2: 2.2222,
     Field3: []float32{1.1111, 2.2222, 3.3333},
-    Field4: []float64{4.4444, 5.4444, 7.7777},
+    Field4: []float64{4.4444, 5.5555, 7.7777},
     Field5: [3]float32{1.1111, 2.2222, 3.3333},
-    Field6: [3]float64{4.4444, 5.4444, 7.7777},
+    Field6: [3]float64{4.4444, 5.5555, 7.7777},
     Field7: 7,
     Field8: "field8",
 }
@@ -137,8 +137,8 @@ foo := &Foo{
 fmt.Printf("%+v\n", *foo)
 // {
 //Field1:1.1111 Field2:2.2222
-//Field3:[1.1111 2.2222 3.3333] Field4:[4.4444 5.4444 7.7777]
-//Field5:[1.1111 2.2222 3.3333] Field6:[4.4444 5.4444 7.7777]
+//Field3:[1.1111 2.2222 3.3333] Field4:[4.4444 5.5555 7.7777]
+//Field5:[1.1111 2.2222 3.3333] Field6:[4.4444 5.5555 7.7777]
 //Field7:7 Field8:field8
 //}
 
@@ -149,8 +149,8 @@ if err := attrs_go.RoundUpFloatStruct(foo, 3); err != nil {
 fmt.Printf("%+v", *foo)
 // {
 //Field1:1.112 Field2:2.223
-//Field3:[1.112 2.223 3.334] Field4:[4.445 5.445 7.778]
-//Field5:[1.112 2.223 3.334] Field6:[4.445 5.445 7.778]
+//Field3:[1.112 2.223 3.334] Field4:[4.445 5.556 7.778]
+//Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778]
 //Field7:7 Field8:field8
 //}
 ```
