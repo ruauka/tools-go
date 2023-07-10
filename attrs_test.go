@@ -88,7 +88,7 @@ func ExampleGetAttr() {
 	}
 
 	fmt.Println(value)
-	// Output: Field value: username
+	// Output: username
 }
 
 func TestSetAttr(t *testing.T) {
@@ -174,7 +174,7 @@ func ExampleSetAttr() {
 	}
 
 	fmt.Println(u.Username)
-	// Output: Field value: new_username
+	// Output: new_username
 }
 
 func TestSetStructAttrs(t *testing.T) {
@@ -417,14 +417,16 @@ func ExampleSetStructAttrs() {
 		Married:  nil,
 	}
 
-	fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // username, 30, true
+	fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married)
 
 	if err := SetStructAttrs(user, newUser); err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married)
-	// Output: new_username, 35, true
+	// Output:
+	// username, 30, true
+	// new_username, 35, true
 }
 
 func TestRoundUp(t *testing.T) {
@@ -572,22 +574,12 @@ func ExampleRoundUpFloatStruct() {
 	}
 
 	fmt.Printf("%+v\n", *foo)
-	// {
-	//Field1:1.1111 Field2:2.2222
-	//Field3:[1.1111 2.2222 3.3333] Field4:[4.4444 5.5555 7.7777]
-	//Field5:[1.1111 2.2222 3.3333] Field6:[4.4444 5.5555 7.7777]
-	//Field7:7 Field8:field8
-	//}
 
 	if err := RoundUpFloatStruct(foo, 3); err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Printf("%+v", *foo)
-	// Output: {
-	// Field1:1.112 Field2:2.223
-	// Field3:[1.112 2.223 3.334] Field4:[4.445 5.556 7.778]
-	// Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778]
-	// Field7:7 Field8:field8
-	// }
+	// Output: {Field1:1.1111 Field2:2.2222 Field3:[1.1111 2.2222 3.3333] Field4:[4.4444 5.5555 7.7777] Field5:[1.1111 2.2222 3.3333] Field6:[4.4444 5.5555 7.7777] Field7:7 Field8:field8}
+	// {Field1:1.112 Field2:2.223 Field3:[1.112 2.223 3.334] Field4:[4.445 5.556 7.778] Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778] Field7:7 Field8:field8}
 }
