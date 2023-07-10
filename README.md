@@ -7,9 +7,10 @@ Tool for working with structure fields. Analog of Python 'getattr' and 'setattr'
 go get github.com/ruauka/attrs-go
 ```
 
-## Usage
+## Docs
+Documentation - https://pkg.go.dev/github.com/ruauka/attrs-go
 
-Full documentation see at https://pkg.go.dev/github.com/ruauka/attrs-go
+## Usage
 
 **GetAttr()** - get struct field value.
 
