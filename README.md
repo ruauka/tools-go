@@ -1,41 +1,32 @@
 ## Project description
-Tool for working with structure fields.
+Tool for working with structure fields. Analog of Python 'getattr' and 'setattr', also some usefull funcs to change and rounding struct fields.
+
 
 ## Install
 ```bash
-go get github.com/ruauka/attrs-go@v1.0.14
+go get github.com/ruauka/attrs-go
 ```
 
 ## Usage
-<ins>**GetAttr**</ins> - get struct field value. 
 
-Args:
- - obj: struct - value param. Fields can be ptr or value.
- - fieldName: value param.
-```go
-func GetAttr(obj interface{}, fieldName string) (interface{}, error)
-```
+Full documentation see at https://pkg.go.dev/github.com/ruauka/attrs-go
+
+**GetAttr()** - get struct field value.
 
 ```go
+import attrs "github.com/ruauka/attrs-go"
+
 type User struct {
     Username string
 }
 
 user := User{Username: "username value"}
 
-value, err := attrs_go.GetAttr(user, "Username")
+value, err := attrs.GetAttr(user, "Username")
 fmt.Println(value) // username value
 ```
 
-<ins>**SetAttr**</ins>  - set new value on structure field.
-
-Args:
-- obj: struct - ptr param. Struct fields can be ptr or value.
-- fieldName, newValue: value param.
-
-```go
-func SetAttr(obj, newValue interface{}, fieldName string) error
-```
+**SetAttr()**  - set new value on structure field.
 
 ```go
 type User struct {
@@ -44,22 +35,15 @@ type User struct {
 
 u := &User{Username: "username value"}
 
-if err := attrs_go.SetAttr(u, "new username value", "Username"); err != nil {
+if err := attrs.SetAttr(u, "new username value", "Username"); err != nil {
     fmt.Println(err)
 }
 
 fmt.Println(u.Username) // new username value
 ```
 
-<ins>**SetStructAttrs**</ins>  - updates current structure fields with the values of the new structure fields.
+**SetStructAttrs()**  - updates current structure fields with the values of the new structure fields.
 
-Args:
-- curObj: struct - ptr param. Struct fields can be ptr or value.
-- newObj: struct - value param. Struct fields can be ptr or value.
-
-```go
-func SetStructAttrs(curObj, newObj interface{}) error
-```
 
 ```go
 type User struct {
@@ -89,27 +73,14 @@ newUser := NewUser{
 
 fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // username, 30, true
 
-if err := attrs_go.SetStructAttrs(user, newUser); err != nil {
+if err := attrs.SetStructAttrs(user, newUser); err != nil {
     fmt.Println(err)
 }
 
 fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // new_username, 35, true
 ```
 
-<ins>**RoundUpFloatStruct**</ins>  - round up float struct fields to certain precision.
-
-Args:
-- obj: struct - ptr param. Struct fields can be value, not ptr.
-- precision: round to.
-
-Constraint:
-
-- simple floats
-- array and slice
-
-```go
-func RoundUpFloatStruct(obj interface{}, precision int) error
-```
+**RoundUpFloatStruct()**  - round up float struct fields to certain precision.
 
 ```go
 type Foo struct {
@@ -142,7 +113,7 @@ fmt.Printf("%+v\n", *foo)
 //Field7:7 Field8:field8
 //}
 
-if err := attrs_go.RoundUpFloatStruct(foo, 3); err != nil {
+if err := attrs.RoundUpFloatStruct(foo, 3); err != nil {
     fmt.Println(err)
 }
 

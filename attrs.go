@@ -20,9 +20,8 @@ const (
 )
 
 // GetAttr - get struct field value.
-// Args:
-// - obj: struct, fields can be ptr or value.
-// - fieldName: value param.
+// 'obj': value param, fields can be ptr or value.
+// 'fieldName': value param.
 func GetAttr(obj interface{}, fieldName string) (interface{}, error) {
 	// to reflect value
 	objValue := reflect.ValueOf(obj)
@@ -53,9 +52,8 @@ func GetAttr(obj interface{}, fieldName string) (interface{}, error) {
 }
 
 // SetAttr - set new value on structure field.
-// Args:
-// - obj: struct - ptr param. Struct fields can be ptr or value.
-// - fieldName, newValue: value param.
+// 'obj': ptr struct, fields can be ptr or value.
+// 'fieldName', 'newValue': value param.
 func SetAttr(obj, newValue interface{}, fieldName string) error {
 	var (
 		// to reflect value
@@ -97,9 +95,8 @@ func SetAttr(obj, newValue interface{}, fieldName string) error {
 }
 
 // SetStructAttrs - updates current structure fields with the values of the new structure fields.
-// Args:
-// - curObj: struct - ptr param. Struct fields can be ptr or value.
-// - newObj: struct - value param. Struct fields can be ptr or value.
+// 'curObj': ptr struct, fields can be ptr or value.
+// 'newObj': value struct, fields can be ptr or value.
 func SetStructAttrs(curObj, newObj interface{}) error {
 	// to reflect value
 	objValue := reflect.ValueOf(newObj)
@@ -151,11 +148,9 @@ func iterRound(field reflect.Value, precision int, bitSize int) {
 }
 
 // RoundUpFloatStruct - round up float struct fields to certain precision
-// - Simple floats
-// - Array and slice
-// Args:
-// - obj: struct - ptr param. Struct fields can be value, not ptr.
-// - precision: round to.
+// Constraint: simple floats, array and slice.
+// 'obj': ptr struct, fields can be value, not ptr.
+// 'precision': round to.
 func RoundUpFloatStruct(obj interface{}, precision int) error {
 	objValue := reflect.ValueOf(obj)
 	// struct ptr check
