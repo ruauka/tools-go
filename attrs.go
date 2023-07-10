@@ -1,3 +1,9 @@
+/*
+ * Author: ruauka
+ *
+ * License: MIT (See License file for full text).
+ */
+
 // Package attrs_go - reflect helper.
 package attrs_go //nolint:revive,stylecheck
 
