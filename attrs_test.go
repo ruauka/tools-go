@@ -2,6 +2,7 @@ package attrs_go
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"testing"
 
@@ -79,10 +80,15 @@ func ExampleGetAttr() {
 		Username string
 	}
 
-	user := User{Username: "username value"}
+	user := User{Username: "username"}
 
-	value, _ := GetAttr(user, "Username")
-	fmt.Println(value) // username value
+	value, err := GetAttr(user, "Username")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(value)
+	// Output: Field value: username
 }
 
 func TestSetAttr(t *testing.T) {
@@ -161,13 +167,14 @@ func ExampleSetAttr() {
 		Username string
 	}
 
-	u := &User{Username: "username value"}
+	u := &User{Username: "username"}
 
-	if err := SetAttr(u, "new username value", "Username"); err != nil {
-		fmt.Println(err)
+	if err := SetAttr(u, "new_username", "Username"); err != nil {
+		log.Fatal(err)
 	}
 
-	fmt.Println(u.Username) // new username value
+	fmt.Println(u.Username)
+	// Output: Field value: new_username
 }
 
 func TestSetStructAttrs(t *testing.T) {
@@ -416,7 +423,8 @@ func ExampleSetStructAttrs() {
 		fmt.Println(err)
 	}
 
-	fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // new_username, 35, true
+	fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married)
+	// Output: new_username, 35, true
 }
 
 func TestRoundUp(t *testing.T) {
@@ -444,7 +452,8 @@ func TestRoundUp(t *testing.T) {
 
 func ExampleRoundUp() {
 	res := RoundUp(0.12345, 3)
-	fmt.Println(res) // 0.124
+	fmt.Println(res)
+	// Output:  0.124
 }
 
 func TestRoundUpFloatStruct(t *testing.T) {
@@ -575,10 +584,10 @@ func ExampleRoundUpFloatStruct() {
 	}
 
 	fmt.Printf("%+v", *foo)
-	// {
-	//Field1:1.112 Field2:2.223
-	//Field3:[1.112 2.223 3.334] Field4:[4.445 5.556 7.778]
-	//Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778]
-	//Field7:7 Field8:field8
-	//}
+	// Output: {
+	// Field1:1.112 Field2:2.223
+	// Field3:[1.112 2.223 3.334] Field4:[4.445 5.556 7.778]
+	// Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778]
+	// Field7:7 Field8:field8
+	// }
 }
