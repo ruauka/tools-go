@@ -1,13 +1,13 @@
 # Attrs-go
 ![](https://img.shields.io/github/go-mod/go-version/ruauka/attrs-go)
 [![Coverage Status](https://codecov.io/github/ruauka/attrs-go/coverage.svg?branch=master)](https://codecov.io/gh/ruauka/attrs-go)
-[![build](https://github.com/ruauka/attrs-go/actions/workflows/pipline.yml/badge.svg)](https://github.com/ruauka/attrs-go/actions/workflows/pipeline.yml)
+[![build](https://github.com/ruauka/attrs-go/actions/workflows/pipeline.yml/badge.svg)](https://github.com/ruauka/attrs-go/actions/workflows/pipeline.yml)
 [![GoDoc](https://godoc.org/github.com/ruauka/attrs-go?status.svg)](https://godoc.org/github.com/ruauka/attrs-go)
 
 ## Overview
 Tool for working with structure fields:
  - analog of Python 'getattr' and 'setattr'
- - some usefull funcs to changing and rounding struct fields
+ - some useful funcs to changing and rounding struct fields
 
 ## Content
 

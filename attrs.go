@@ -5,7 +5,7 @@
  */
 
 // Package attrs_go - tool for working with structure fields. Analog of Python 'getattr' and 'setattr',
-// also some usefull funcs to change and rounding struct fields.
+// also some useful funcs to change and rounding struct fields.
 package attrs_go //nolint:revive,stylecheck
 
 import (
