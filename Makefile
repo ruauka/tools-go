@@ -1,11 +1,8 @@
-#test:
-#	@go test -cover ./... -coverprofile cover.out
-#	@echo "-------------------------------------------------------------------------------------"
-#	@go tool cover -func cover.out
-#	@echo "-------------------------------------------------------------------------------------"
 test:
-	@go test . -coverprofile=coverage.out
-	@go tool cover -func coverage.out
+	@go test -cover ./... -coverprofile cover.out
+	@echo "-------------------------------------------------------------------------------------"
+	@go tool cover -func cover.out
+	@echo "-------------------------------------------------------------------------------------"
 
 lint:
 	@golangci-lint run
