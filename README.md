@@ -1,6 +1,6 @@
 # Attrs-go
 ![](https://img.shields.io/github/go-mod/go-version/ruauka/attrs-go)
-[![codecov.io](https://codecov.io/github/ruauka/attrs-go/coverage.svg?branch=master)](https://codecov.io/github/ruauka/attrs-go?branch=master)
+![](https://img.shields.io/codecov/c/github/ruauka/attrs-go)
 [![build](https://github.com/ruauka/attrs-go/actions/workflows/pipeline.yml/badge.svg)](https://github.com/ruauka/attrs-go/actions/workflows/pipeline.yml)
 [![GoDoc](https://godoc.org/github.com/ruauka/attrs-go?status.svg)](https://godoc.org/github.com/ruauka/attrs-go)
 
