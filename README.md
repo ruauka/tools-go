@@ -1,18 +1,33 @@
-## Project description
-Tool for working with structure fields. Analog of Python 'getattr' and 'setattr', also some usefull funcs to change and rounding struct fields.
+# Attrs-go
+![](https://img.shields.io/github/go-mod/go-version/ruauka/attrs-go)
+[![Coverage Status](https://codecov.io/github/ruauka/attrs-go/coverage.svg?branch=master)](https://codecov.io/gh/ruauka/attrs-go)
+[![build](https://github.com/ruauka/attrs-go/actions/workflows/pipline.yml/badge.svg)](https://github.com/glebarez/cero/ruauka/attrs-go/pipline.yml)
+[![GoDoc](https://godoc.org/github.com/ruauka/attrs-go?status.svg)](https://godoc.org/github.com/ruauka/attrs-go)
 
+## Overview
+Tool for working with structure fields:
+ - analog of Python 'getattr' and 'setattr'
+ - some usefull funcs to changing and rounding struct fields
 
-## Install
+## Content
+
+- [Installation](#installation)
+- [Usage](#usage)
+    - [GetAttr](#getattr)
+    - [SetAttr](#setattr)
+    - [SetStructAttrs](#setstructattrs)
+    - [RoundUpFloatStruct](#roundupfloatstruct)
+
+## Installation
+To install the package run
 ```bash
 go get github.com/ruauka/attrs-go
 ```
 
-## Docs
-Documentation - https://pkg.go.dev/github.com/ruauka/attrs-go
-
 ## Usage
 
-**GetAttr()** - get struct field value.
+### GetAttr
+Get struct field value.
 
 ```go
 import attrs "github.com/ruauka/attrs-go"
@@ -27,9 +42,12 @@ value, err := attrs.GetAttr(user, "Username")
 fmt.Println(value) // username value
 ```
 
-**SetAttr()**  - set new value on structure field.
+### SetAttr
+Set new value at structure field.
 
 ```go
+import attrs "github.com/ruauka/attrs-go"
+
 type User struct {
     Username string
 }
@@ -43,10 +61,13 @@ if err := attrs.SetAttr(u, "new username value", "Username"); err != nil {
 fmt.Println(u.Username) // new username value
 ```
 
-**SetStructAttrs()**  - updates current structure fields with the values of the new structure fields.
+### SetStructAttrs
+Update current structure fields with the values of the new structure fields.
 
 
 ```go
+import attrs "github.com/ruauka/attrs-go"
+
 type User struct {
     Username string // will change by pte
     Age      int    // will change by value
@@ -81,9 +102,12 @@ if err := attrs.SetStructAttrs(user, newUser); err != nil {
 fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // new_username, 35, true
 ```
 
-**RoundUpFloatStruct()**  - round up float struct fields to certain precision.
+### RoundUpFloatStruct
+Round up float struct fields to certain precision.
 
 ```go
+import attrs "github.com/ruauka/attrs-go"
+
 type Foo struct {
     Field1 float32
     Field2 float64
