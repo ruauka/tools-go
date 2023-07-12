@@ -15,13 +15,14 @@ Tool for working with structure fields:
 - [Usage](#usage)
     - [GetAttr](#getattr)
     - [SetAttr](#setattr)
+    - [RoundUp](#roundup)
     - [SetStructAttrs](#setstructattrs)
     - [RoundUpFloatStruct](#roundupfloatstruct)
 
 ## Installation
 To install the package run
 ```bash
-go get github.com/ruauka/attrs-go
+go get -u github.com/ruauka/attrs-go
 ```
 
 ## Usage
@@ -59,6 +60,15 @@ if err := attrs.SetAttr(u, "new username value", "Username"); err != nil {
 }
 
 fmt.Println(u.Username) // new username value
+```
+
+### RoundUp
+Float64 rounder to certain precision.
+```go
+import attrs "github.com/ruauka/attrs-go"
+
+res := attrs.RoundUp(0.12345, 3)
+fmt.Println(res) // 0.124
 ```
 
 ### SetStructAttrs
