@@ -12,6 +12,8 @@ import (
 	"fmt"
 	"math"
 	"reflect"
+
+	"golang.org/x/exp/constraints"
 )
 
 // float bit size.
@@ -129,9 +131,9 @@ func SetStructAttrs(curObj, newObj interface{}) error {
 	return nil
 }
 
-// RoundUp - float64 rounder to certain precision.
-func RoundUp(value float64, precision int) float64 {
-	return math.Ceil(value*(math.Pow10(precision))) / math.Pow10(precision)
+// RoundUp - float64 | float32 rounder to certain precision.
+func RoundUp[V float64 | float32](value V, precision int) V {
+	return V(math.Ceil(float64(value)*(math.Pow10(precision))) / math.Pow10(precision))
 }
 
 // iterRound - round any float. Private func.
@@ -194,4 +196,24 @@ func RoundUpFloatStruct(obj interface{}, precision int) error {
 	}
 
 	return nil
+}
+
+// BinarySearch - universal types binary search func.
+// Returns the index of the searching value, else returns -1.
+func BinarySearch[T constraints.Ordered](elems []T, search T) int {
+	start, mid, end := 0, 0, len(elems)-1
+
+	for start <= end {
+		mid = (start + end) >> 1
+		switch {
+		case elems[mid] > search:
+			end = mid - 1
+		case elems[mid] < search:
+			start = mid + 1
+		default:
+			return mid
+		}
+	}
+
+	return -1
 }

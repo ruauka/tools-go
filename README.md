@@ -18,6 +18,7 @@ Tool for working with structure fields:
     - [RoundUp](#roundup)
     - [SetStructAttrs](#setstructattrs)
     - [RoundUpFloatStruct](#roundupfloatstruct)
+    - [BinarySearch](#binarysearch)
 
 ## Installation
 To install the package run
@@ -159,4 +160,28 @@ fmt.Printf("%+v", *foo)
 //Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778]
 //Field7:7 Field8:field8
 //}
+```
+
+### BinarySearch
+Universal types binary search func.
+```go
+import attrs "github.com/ruauka/attrs-go"
+
+var (
+    elemsInt = []int{1, 2, 3, 4}
+    elemsStr = []string{"1", "2", "3", "4"}
+    elems64  = []float64{1.1, 2.2, 3.3, 4.4}
+)
+
+resInt := attrs.BinarySearch(elemsInt, 4)
+fmt.Println(resInt) // 3
+
+resStr := attrs.BinarySearch(elemsStr, "4")
+fmt.Println(resStr) // 3
+
+res64 := attrs.BinarySearch(elems64, 4.4)
+fmt.Println(res64) // 3
+
+notFound := attrs.BinarySearch(elems64, 0)
+fmt.Println(notFound) // -1
 ```

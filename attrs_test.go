@@ -3,6 +3,7 @@ package attrs_go
 import (
 	"fmt"
 	"log"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -430,32 +431,34 @@ func ExampleSetStructAttrs() {
 }
 
 func TestRoundUp(t *testing.T) {
-	TestCases := []struct {
-		value     float64
-		precision int
-		expected  float64
-		testName  string
-	}{
-		{
-			value:     0.123456789,
-			precision: 4,
-			expected:  0.1235,
-			testName:  "OK",
-		},
-	}
-
-	for _, testCase := range TestCases {
-		t.Run(testCase.testName, func(t *testing.T) {
-			result := RoundUp(testCase.value, testCase.precision)
-			require.Equal(t, testCase.expected, result)
-		})
-	}
+	t.Run("OK float32", func(t *testing.T) {
+		result := RoundUp(float32(0.123456789), 4)
+		require.Equal(t, float32(0.1235), result)
+	})
+	t.Run("OK float64", func(t *testing.T) {
+		result := RoundUp(0.123456789, 4)
+		require.Equal(t, 0.1235, result)
+	})
 }
 
 func ExampleRoundUp() {
-	res := RoundUp(0.12345, 3)
-	fmt.Println(res)
+	var (
+		val32 float32 = 0.12345
+		val64 float64 = 0.12345
+	)
+
+	res32 := RoundUp(val32, 3)
+	fmt.Println(res32)
+	fmt.Println(reflect.TypeOf(res32))
+
+	res64 := RoundUp(val64, 3)
+	fmt.Println(res64)
+	fmt.Println(reflect.TypeOf(res64))
+
 	// Output:  0.124
+	// float32
+	// 0.124
+	// float64
 }
 
 func TestRoundUpFloatStruct(t *testing.T) {
@@ -582,4 +585,56 @@ func ExampleRoundUpFloatStruct() {
 	fmt.Printf("%+v", *foo)
 	// Output: {Field1:1.1111 Field2:2.2222 Field3:[1.1111 2.2222 3.3333] Field4:[4.4444 5.5555 7.7777] Field5:[1.1111 2.2222 3.3333] Field6:[4.4444 5.5555 7.7777] Field7:7 Field8:field8}
 	// {Field1:1.112 Field2:2.223 Field3:[1.112 2.223 3.334] Field4:[4.445 5.556 7.778] Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778] Field7:7 Field8:field8}
+}
+
+func TestBinarySearch(t *testing.T) {
+	t.Run("OK int", func(t *testing.T) {
+		result := BinarySearch([]int{1, 2, 3, 4}, 4)
+		require.Equal(t, 3, result)
+	})
+	t.Run("OK string", func(t *testing.T) {
+		result := BinarySearch([]string{"1", "2", "3", "4"}, "4")
+		require.Equal(t, 3, result)
+	})
+	t.Run("OK float32", func(t *testing.T) {
+		result := BinarySearch([]float32{1, 2, 3, 4}, 4)
+		require.Equal(t, 3, result)
+	})
+	t.Run("OK float64", func(t *testing.T) {
+		result := BinarySearch([]float64{1, 2, 3, 4}, 4)
+		require.Equal(t, 3, result)
+	})
+	t.Run("OK int start", func(t *testing.T) {
+		result := BinarySearch([]int{1, 2, 3, 4}, 1)
+		require.Equal(t, 0, result)
+	})
+	t.Run("Not find", func(t *testing.T) {
+		result := BinarySearch([]int{1, 2, 3, 4}, 0)
+		require.Equal(t, -1, result)
+	})
+}
+
+func ExampleBinarySearch() {
+	var (
+		elemsInt = []int{1, 2, 3, 4}
+		elemsStr = []string{"1", "2", "3", "4"}
+		elems64  = []float64{1.1, 2.2, 3.3, 4.4}
+	)
+
+	resInt := BinarySearch(elemsInt, 4)
+	fmt.Println(resInt)
+
+	resStr := BinarySearch(elemsStr, "4")
+	fmt.Println(resStr)
+
+	res64 := BinarySearch(elems64, 4.4)
+	fmt.Println(res64)
+
+	notFound := BinarySearch(elems64, 0)
+	fmt.Println(notFound)
+
+	// Output:  3
+	// 3
+	// 3
+	// -1
 }
