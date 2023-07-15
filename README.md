@@ -64,13 +64,13 @@ fmt.Println(u.Username) // new username value
 ```
 
 ### RoundUp
-Float64 rounder to certain precision.
+Float64 and Float32 rounder to certain precision.
 ```go
 import attrs "github.com/ruauka/attrs-go"
 
 var (
-val32 float32 = 0.12345
-val64 float64 = 0.12345
+    val32 float32 = 0.12345
+    val64 float64 = 0.12345
 )
 
 res32 := RoundUp(val32, 3)
