@@ -68,8 +68,18 @@ Float64 rounder to certain precision.
 ```go
 import attrs "github.com/ruauka/attrs-go"
 
-res := attrs.RoundUp(0.12345, 3)
-fmt.Println(res) // 0.124
+var (
+val32 float32 = 0.12345
+val64 float64 = 0.12345
+)
+
+res32 := RoundUp(val32, 3)
+fmt.Println(res32) // 0.124
+fmt.Println(reflect.TypeOf(res32)) // float32
+
+res64 := RoundUp(val64, 3)
+fmt.Println(res64) // 0.124
+fmt.Println(reflect.TypeOf(res64)) // float64
 ```
 
 ### SetStructAttrs
