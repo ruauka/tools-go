@@ -430,38 +430,38 @@ func ExampleSetStructAttrs() {
 	// new_username, 35, true
 }
 
-func TestRoundUp(t *testing.T) {
+func TestRound(t *testing.T) {
 	t.Run("OK float32", func(t *testing.T) {
-		result := RoundUp(float32(0.123456789), 4)
+		result := Round(float32(0.123456789), 4)
 		require.Equal(t, float32(0.1235), result)
 	})
 	t.Run("OK float64", func(t *testing.T) {
-		result := RoundUp(0.123456789, 4)
+		result := Round(0.123456789, 4)
 		require.Equal(t, 0.1235, result)
 	})
 }
 
-func ExampleRoundUp() {
+func ExampleRound() {
 	var (
 		val32 float32 = 0.12345
 		val64 float64 = 0.12345
 	)
 
-	res32 := RoundUp(val32, 3)
+	res32 := Round(val32, 3)
 	fmt.Println(res32)
 	fmt.Println(reflect.TypeOf(res32))
 
-	res64 := RoundUp(val64, 3)
+	res64 := Round(val64, 3)
 	fmt.Println(res64)
 	fmt.Println(reflect.TypeOf(res64))
 
-	// Output:  0.124
+	// Output:  0.123
 	// float32
-	// 0.124
+	// 0.123
 	// float64
 }
 
-func TestRoundUpFloatStruct(t *testing.T) {
+func TestRoundFloatStruct(t *testing.T) {
 	notStruct := "arg not struct"
 
 	type Foo struct {
@@ -487,12 +487,12 @@ func TestRoundUpFloatStruct(t *testing.T) {
 	}
 
 	expected := Foo{
-		Field1: 1.112,
-		Field2: 2.223,
-		Field3: []float32{1.112, 2.223, 3.334},
-		Field4: []float64{4.445, 5.556, 7.778},
-		Field5: [3]float32{1.112, 2.223, 3.334},
-		Field6: [3]float64{4.445, 5.556, 7.778},
+		Field1: 1.111,
+		Field2: 2.222,
+		Field3: []float32{1.111, 2.222, 3.333},
+		Field4: []float64{4.444, 5.556, 7.778},
+		Field5: [3]float32{1.111, 2.222, 3.333},
+		Field6: [3]float64{4.444, 5.556, 7.778},
 		Field7: 7,
 		Field8: "field8",
 	}
@@ -543,7 +543,7 @@ func TestRoundUpFloatStruct(t *testing.T) {
 
 	for _, testCase := range TestCases {
 		t.Run(testCase.testName, func(t *testing.T) {
-			err := RoundUpFloatStruct(testCase.obj, testCase.precision)
+			err := RoundFloatStruct(testCase.obj, testCase.precision)
 			if err != nil {
 				require.ErrorIs(t, testCase.expectedErr, err)
 			}
@@ -553,7 +553,7 @@ func TestRoundUpFloatStruct(t *testing.T) {
 	}
 }
 
-func ExampleRoundUpFloatStruct() {
+func ExampleRoundFloatStruct() {
 	type Foo struct {
 		Field1 float32
 		Field2 float64
@@ -578,63 +578,186 @@ func ExampleRoundUpFloatStruct() {
 
 	fmt.Printf("%+v\n", *foo)
 
-	if err := RoundUpFloatStruct(foo, 3); err != nil {
+	if err := RoundFloatStruct(foo, 3); err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Printf("%+v", *foo)
 	// Output: {Field1:1.1111 Field2:2.2222 Field3:[1.1111 2.2222 3.3333] Field4:[4.4444 5.5555 7.7777] Field5:[1.1111 2.2222 3.3333] Field6:[4.4444 5.5555 7.7777] Field7:7 Field8:field8}
-	// {Field1:1.112 Field2:2.223 Field3:[1.112 2.223 3.334] Field4:[4.445 5.556 7.778] Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778] Field7:7 Field8:field8}
+	// {Field1:1.111 Field2:2.222 Field3:[1.111 2.222 3.333] Field4:[4.444 5.556 7.778] Field5:[1.111 2.222 3.333] Field6:[4.444 5.556 7.778] Field7:7 Field8:field8}
 }
 
-func TestBinarySearch(t *testing.T) {
-	t.Run("OK int", func(t *testing.T) {
-		result := BinarySearch([]int{1, 2, 3, 4}, 4)
-		require.Equal(t, 3, result)
-	})
-	t.Run("OK string", func(t *testing.T) {
-		result := BinarySearch([]string{"1", "2", "3", "4"}, "4")
-		require.Equal(t, 3, result)
-	})
-	t.Run("OK float32", func(t *testing.T) {
-		result := BinarySearch([]float32{1, 2, 3, 4}, 4)
-		require.Equal(t, 3, result)
-	})
-	t.Run("OK float64", func(t *testing.T) {
-		result := BinarySearch([]float64{1, 2, 3, 4}, 4)
-		require.Equal(t, 3, result)
-	})
-	t.Run("OK int start", func(t *testing.T) {
-		result := BinarySearch([]int{1, 2, 3, 4}, 1)
-		require.Equal(t, 0, result)
-	})
-	t.Run("Not find", func(t *testing.T) {
-		result := BinarySearch([]int{1, 2, 3, 4}, 0)
-		require.Equal(t, -1, result)
-	})
+func TestIntersection(t *testing.T) {
+	type args[T any] struct {
+		left, right []T
+	}
+
+	type cases[T any] struct {
+		args        args[T]
+		expected    []T
+		expectedErr error
+		testName    string
+	}
+
+	testCasesInts := []cases[int]{
+		{
+			args:     args[int]{left: []int{1, 2, 3}, right: []int{1, 2, 4}},
+			expected: []int{1, 2},
+			testName: "Ints. OK",
+		},
+		{
+			args:        args[int]{left: []int{1}, right: []int{1, 2}},
+			expectedErr: ErrLenSlices,
+			testName:    "Ints. Error length",
+		},
+	}
+	for _, testCase := range testCasesInts {
+		t.Run(testCase.testName, func(t *testing.T) {
+			actual, err := Intersection(testCase.args.left, testCase.args.right)
+			if err != nil {
+				require.ErrorIs(t, testCase.expectedErr, err)
+			}
+
+			require.Equal(t, testCase.expected, actual)
+		})
+	}
+
+	testCasesFloats := []cases[float64]{
+		{
+			args:     args[float64]{left: []float64{1, 2, 3}, right: []float64{1, 2, 4}},
+			expected: []float64{1, 2},
+			testName: "Floats. OK",
+		},
+		{
+			args:        args[float64]{left: []float64{1}, right: []float64{1, 2}},
+			expectedErr: ErrLenSlices,
+			testName:    "Floats. Error length",
+		},
+	}
+	for _, testCase := range testCasesFloats {
+		t.Run(testCase.testName, func(t *testing.T) {
+			actual, err := Intersection(testCase.args.left, testCase.args.right)
+			if err != nil {
+				require.ErrorIs(t, testCase.expectedErr, err)
+			}
+
+			require.Equal(t, testCase.expected, actual)
+		})
+	}
+
+	testCasesStrs := []cases[string]{
+		{
+			args:     args[string]{left: []string{"aaa", "bbb", "ccc"}, right: []string{"aaa", "bbb", "ddd"}},
+			expected: []string{"aaa", "bbb"},
+			testName: "Strings. OK",
+		},
+		{
+			args:        args[string]{left: []string{"aaa"}, right: []string{"aaa", "bbb"}},
+			expectedErr: ErrLenSlices,
+			testName:    "Strings. Error length",
+		},
+	}
+	for _, testCase := range testCasesStrs {
+		t.Run(testCase.testName, func(t *testing.T) {
+			actual, err := Intersection(testCase.args.left, testCase.args.right)
+			if err != nil {
+				require.ErrorIs(t, testCase.expectedErr, err)
+			}
+
+			require.Equal(t, testCase.expected, actual)
+		})
+	}
 }
 
-func ExampleBinarySearch() {
+func ExampleIntersection() {
 	var (
-		elemsInt = []int{1, 2, 3, 4}
-		elemsStr = []string{"1", "2", "3", "4"}
-		elems64  = []float64{1.1, 2.2, 3.3, 4.4}
+		intsL = []int{1, 2, 3}
+		intsR = []int{1, 2, 4}
+
+		floatsL = []float64{1.1, 2.2, 3.3}
+		floatsR = []float64{1.1, 2.2, 4.4}
+
+		strL = []string{"aaa", "bbb", "ccc"}
+		strR = []string{"aaa", "bbb", "ddd"}
 	)
 
-	resInt := BinarySearch(elemsInt, 4)
-	fmt.Println(resInt)
+	resInts, _ := Intersection(intsL, intsR)
+	fmt.Println(resInts)
 
-	resStr := BinarySearch(elemsStr, "4")
-	fmt.Println(resStr)
+	resFloats, _ := Intersection(floatsL, floatsR)
+	fmt.Println(resFloats)
 
-	res64 := BinarySearch(elems64, 4.4)
-	fmt.Println(res64)
+	resStrs, _ := Intersection(strL, strR)
+	fmt.Println(resStrs)
 
-	notFound := BinarySearch(elems64, 0)
-	fmt.Println(notFound)
+	// Output:
+	// [1 2]
+	// [1.1 2.2]
+	// [aaa bbb]
+}
 
-	// Output:  3
-	// 3
-	// 3
-	// -1
+func TestSlicesConcat(t *testing.T) {
+	TestCasesInts := []struct {
+		sl1, sl2, sl3 []int
+		expected      []int
+		testName      string
+	}{
+		{
+			sl1:      []int{1, 2, 3},
+			sl2:      []int{4, 5, 6},
+			sl3:      []int{7, 8, 9},
+			expected: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			testName: "OK. Ints",
+		},
+	}
+
+	for _, testCase := range TestCasesInts {
+		t.Run(testCase.testName, func(t *testing.T) {
+			actual := SlicesConcat(testCase.sl1, testCase.sl2, testCase.sl3)
+			require.Equal(t, testCase.expected, actual)
+		})
+	}
+
+	TestCases := []struct {
+		sl1, sl2, sl3 []string
+		expected      []string
+		testName      string
+	}{
+		{
+			sl1:      []string{"1", "2", "3"},
+			sl2:      []string{"4", "5", "6"},
+			sl3:      []string{"7", "8", "9"},
+			expected: []string{"1", "2", "3", "4", "5", "6", "7", "8", "9"},
+			testName: "OK. Strs",
+		},
+	}
+
+	for _, testCase := range TestCases {
+		t.Run(testCase.testName, func(t *testing.T) {
+			actual := SlicesConcat(testCase.sl1, testCase.sl2, testCase.sl3)
+			require.Equal(t, testCase.expected, actual)
+		})
+	}
+}
+
+func ExampleSlicesConcat() {
+	var (
+		ints1 = []int{1, 2, 3}
+		ints2 = []int{4, 5, 6}
+		ints3 = []int{7, 8, 9}
+
+		strs1 = []string{"1", "2", "3"}
+		strs2 = []string{"4", "5", "6"}
+		strs3 = []string{"7", "8", "9"}
+	)
+
+	ints := SlicesConcat(ints1, ints2, ints3)
+	fmt.Println(ints)
+
+	strs := SlicesConcat(strs1, strs2, strs3)
+	fmt.Println(strs)
+
+	// Output:
+	// [1 2 3 4 5 6 7 8 9]
+	// [1 2 3 4 5 6 7 8 9]
 }

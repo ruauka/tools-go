@@ -1,5 +1,5 @@
 test:
-	@go test -cover ./... -coverprofile cover.out
+	@go test -coverpkg=./... -cover ./... -coverprofile cover.out
 	@echo "-------------------------------------------------------------------------------------"
 	@go tool cover -func cover.out
 	@echo "-------------------------------------------------------------------------------------"

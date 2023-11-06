@@ -15,10 +15,12 @@ Tool for working with structure fields:
 - [Usage](#usage)
     - [GetAttr](#getattr)
     - [SetAttr](#setattr)
-    - [RoundUp](#roundup)
+    - [Round](#round)
     - [SetStructAttrs](#setstructattrs)
-    - [RoundUpFloatStruct](#roundupfloatstruct)
-    - [BinarySearch](#binarysearch)
+    - [RoundFloatStruct](#roundfloatstruct)
+    - [Intersection](#intersection)
+    - [SlicesConcat](#slicesconcat)
+    - [TimeDelta](#timedelta)
 
 ## Installation
 To install the package run
@@ -32,54 +34,79 @@ go get -u github.com/ruauka/attrs-go
 Get struct field value.
 
 ```go
-import attrs "github.com/ruauka/attrs-go"
+package main
+
+import (
+    "fmt"
+    
+    attrs "github.com/ruauka/attrs-go"
+)
 
 type User struct {
     Username string
 }
 
-user := User{Username: "username value"}
-
-value, err := attrs.GetAttr(user, "Username")
-fmt.Println(value) // username value
+func main() {
+    user := User{Username: "username value"}
+    
+    value, _ := attrs.GetAttr(user, "Username")
+    fmt.Println(value) // username value
+}
 ```
 
 ### SetAttr
 Set new value at structure field.
 
 ```go
-import attrs "github.com/ruauka/attrs-go"
+package main
+
+import (
+    "fmt"
+    
+    attrs "github.com/ruauka/attrs-go"
+)
 
 type User struct {
     Username string
 }
 
-u := &User{Username: "username value"}
-
-if err := attrs.SetAttr(u, "new username value", "Username"); err != nil {
-    fmt.Println(err)
+func main() {
+    u := &User{Username: "username value"}
+    
+    if err := attrs.SetAttr(u, "new username value", "Username"); err != nil {
+      fmt.Println(err)
+    }
+    
+    fmt.Println(u.Username) // new username value
 }
-
-fmt.Println(u.Username) // new username value
 ```
 
-### RoundUp
+### Round
 Float64 and Float32 rounder to certain precision.
 ```go
-import attrs "github.com/ruauka/attrs-go"
+package main
+
+import (
+    "fmt"
+    "reflect"
+    
+    attrs "github.com/ruauka/attrs-go"
+)
 
 var (
     val32 float32 = 0.12345
     val64 float64 = 0.12345
 )
 
-res32 := RoundUp(val32, 3)
-fmt.Println(res32) // 0.124
-fmt.Println(reflect.TypeOf(res32)) // float32
-
-res64 := RoundUp(val64, 3)
-fmt.Println(res64) // 0.124
-fmt.Println(reflect.TypeOf(res64)) // float64
+func main() {
+    res32 := attrs.Round(val32, 3)
+    fmt.Println(res32)                 // 0.123
+    fmt.Println(reflect.TypeOf(res32)) // float32
+  
+    res64 := attrs.Round(val64, 3)
+    fmt.Println(res64)                 // 0.123
+    fmt.Println(reflect.TypeOf(res64)) // float64
+}
 ```
 
 ### SetStructAttrs
@@ -87,7 +114,13 @@ Update current structure fields with the values of the new structure fields.
 
 
 ```go
-import attrs "github.com/ruauka/attrs-go"
+package main
+
+import (
+    "fmt"
+    
+    attrs "github.com/ruauka/attrs-go"
+)
 
 type User struct {
     Username string // will change by pte
@@ -101,33 +134,42 @@ type NewUser struct {
     Married  *bool   `json:"married"` // nil
 }
 
-user := &User{
-    Username: "username",
-    Age:      30,
-    Married: true
+func main() {
+    user := &User{
+        Username: "username",
+        Age:      30,
+        Married:  true,
+    }
+    
+    newUserName := "new_username"
+    
+    newUser := NewUser{
+        Username: &newUserName,
+        Age:      35,
+        Married:  nil,
+    }
+    
+    fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // username, 30, true
+    
+    if err := attrs.SetStructAttrs(user, newUser); err != nil {
+        fmt.Println(err)
+    }
+    
+    fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // new_username, 35, true
 }
-
-newUserName := "new_username"
-newUser := NewUser{
-    Username: &newUserName,
-    Age:      35,
-    Married:  nil,
-}
-
-fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // username, 30, true
-
-if err := attrs.SetStructAttrs(user, newUser); err != nil {
-    fmt.Println(err)
-}
-
-fmt.Printf("%s, %d, %v\n", user.Username, user.Age, user.Married) // new_username, 35, true
 ```
 
-### RoundUpFloatStruct
+### RoundFloatStruct
 Round up float struct fields to certain precision.
 
 ```go
-import attrs "github.com/ruauka/attrs-go"
+package main
+
+import (
+    "fmt"
+    
+    attrs "github.com/ruauka/attrs-go"
+)
 
 type Foo struct {
     Field1 float32
@@ -136,62 +178,130 @@ type Foo struct {
     Field4 []float64
     Field5 [3]float32
     Field6 [3]float64
-    Field7 int // will be the same
+    Field7 int    // will be the same
     Field8 string // will be the same
 }
 
-foo := &Foo{
-    Field1: 1.1111,
-    Field2: 2.2222,
-    Field3: []float32{1.1111, 2.2222, 3.3333},
-    Field4: []float64{4.4444, 5.5555, 7.7777},
-    Field5: [3]float32{1.1111, 2.2222, 3.3333},
-    Field6: [3]float64{4.4444, 5.5555, 7.7777},
-    Field7: 7,
-    Field8: "field8",
+func main() {
+    foo := &Foo{
+        Field1: 1.1111,
+        Field2: 2.2222,
+        Field3: []float32{1.1111, 2.2222, 3.3333},
+        Field4: []float64{4.4444, 5.5555, 7.7777},
+        Field5: [3]float32{1.1111, 2.2222, 3.3333},
+        Field6: [3]float64{4.4444, 5.5555, 7.7777},
+        Field7: 7,
+        Field8: "field8",
+    }
+
+    fmt.Printf("%+v\n", *foo)
+    // {
+    //Field1:1.1111 Field2:2.2222
+    //Field3:[1.1111 2.2222 3.3333] Field4:[4.4444 5.5555 7.7777]
+    //Field5:[1.1111 2.2222 3.3333] Field6:[4.4444 5.5555 7.7777]
+    //Field7:7 Field8:field8
+    //}
+    
+    if err := attrs.RoundFloatStruct(foo, 3); err != nil {
+        fmt.Println(err)
+    }
+    
+    fmt.Printf("%+v", *foo)
+    // {
+    //Field1:1.112 Field2:2.223
+    //Field3:[1.112 2.223 3.334] Field4:[4.445 5.556 7.778]
+    //Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778]
+    //Field7:7 Field8:field8
+    //}
 }
-
-fmt.Printf("%+v\n", *foo)
-// {
-//Field1:1.1111 Field2:2.2222
-//Field3:[1.1111 2.2222 3.3333] Field4:[4.4444 5.5555 7.7777]
-//Field5:[1.1111 2.2222 3.3333] Field6:[4.4444 5.5555 7.7777]
-//Field7:7 Field8:field8
-//}
-
-if err := attrs.RoundUpFloatStruct(foo, 3); err != nil {
-    fmt.Println(err)
-}
-
-fmt.Printf("%+v", *foo)
-// {
-//Field1:1.112 Field2:2.223
-//Field3:[1.112 2.223 3.334] Field4:[4.445 5.556 7.778]
-//Field5:[1.112 2.223 3.334] Field6:[4.445 5.556 7.778]
-//Field7:7 Field8:field8
-//}
 ```
 
-### BinarySearch
-Universal types binary search func.
+### Intersection
+Find intersection of two arrays. Returns new slice.
 ```go
-import attrs "github.com/ruauka/attrs-go"
+package main
 
-var (
-    elemsInt = []int{1, 2, 3, 4}
-    elemsStr = []string{"1", "2", "3", "4"}
-    elems64  = []float64{1.1, 2.2, 3.3, 4.4}
+import (
+    "fmt"
+    
+    attrs "github.com/ruauka/attrs-go"
 )
 
-resInt := attrs.BinarySearch(elemsInt, 4)
-fmt.Println(resInt) // 3
+var (
+    intsL = []int{1, 2, 3}
+    intsR = []int{1, 2, 4}
+    
+    floatsL = []float64{1.1, 2.2, 3.3}
+    floatsR = []float64{1.1, 2.2, 4.4}
+    
+    strL = []string{"aaa", "bbb", "ccc"}
+    strR = []string{"aaa", "bbb", "ddd"}
+)
 
-resStr := attrs.BinarySearch(elemsStr, "4")
-fmt.Println(resStr) // 3
+func main() {
+    resInts, _ := attrs.Intersection(intsL, intsR)
+    fmt.Println(resInts) // [1 2]
+    
+    resFloats, _ := attrs.Intersection(floatsL, floatsR)
+    fmt.Println(resFloats) // [1.1 2.2]
+    
+    resStrs, _ := attrs.Intersection(strL, strR)
+    fmt.Println(resStrs) // [aaa bbb]
+}
+```
 
-res64 := attrs.BinarySearch(elems64, 4.4)
-fmt.Println(res64) // 3
+### SlicesConcat
+Concatenation of multiple slices.
 
-notFound := attrs.BinarySearch(elems64, 0)
-fmt.Println(notFound) // -1
+```go
+package main
+
+import (
+    "fmt"
+  
+    attrs "github.com/ruauka/attrs-go"
+)
+
+func main() {
+    var (
+        ints1 = []int{1, 2, 3}
+        ints2 = []int{4, 5, 6}
+        ints3 = []int{7, 8, 9}
+    
+        strs1 = []string{"1", "2", "3"}
+        strs2 = []string{"4", "5", "6"}
+        strs3 = []string{"7", "8", "9"}
+    )
+    
+    ints := attrs.SlicesConcat(ints1, ints2, ints3)
+    fmt.Println(ints) // [1 2 3 4 5 6 7 8 9]
+    
+    strs := attrs.SlicesConcat(strs1, strs2, strs3)
+    fmt.Println(strs) // [1 2 3 4 5 6 7 8 9]
+}
+```
+
+### TimeDelta
+The difference between the two dates for each value
+
+```go
+package main
+
+import (
+    "fmt"
+    "time"
+    
+    attrs "github.com/ruauka/attrs-go"
+)
+
+func main() {
+    var (
+        from = time.Date(2022, 5, 25, 1, 1, 1, 1, time.UTC)
+        to   = time.Date(2023, 5, 25, 1, 1, 1, 1, time.UTC)
+    )
+    
+    res := attrs.Elapsed(from, to)
+    fmt.Println(res)           // &{1 0 0 0 0 0 0 12 365 8760 525600 31536000}
+    fmt.Println(res.TotalDays) // 365
+}
 ```

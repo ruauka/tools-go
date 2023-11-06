@@ -9,11 +9,11 @@
 package attrs_go //nolint:revive,stylecheck
 
 import (
+	"cmp"
 	"fmt"
 	"math"
 	"reflect"
-
-	"golang.org/x/exp/constraints"
+	"slices"
 )
 
 // float bit size.
@@ -131,9 +131,9 @@ func SetStructAttrs(curObj, newObj interface{}) error {
 	return nil
 }
 
-// RoundUp - float64 | float32 rounder to certain precision.
-func RoundUp[V float64 | float32](value V, precision int) V {
-	return V(math.Ceil(float64(value)*(math.Pow10(precision))) / math.Pow10(precision))
+// Round - float64 | float32 rounder to certain precision.
+func Round[V float64 | float32](value V, precision int) V {
+	return V(math.Round(float64(value)*(math.Pow10(precision))) / math.Pow10(precision))
 }
 
 // iterRound - round any float. Private func.
@@ -142,19 +142,19 @@ func iterRound(field reflect.Value, precision int, bitSize int) {
 		field := field.Index(j)
 		// bitSize check
 		if bitSize == bitSize64 {
-			field.Set(reflect.ValueOf(RoundUp(field.Float(), precision)))
+			field.Set(reflect.ValueOf(Round(field.Float(), precision)))
 			continue
 		}
 
-		field.Set(reflect.ValueOf(float32(RoundUp(field.Float(), precision))))
+		field.Set(reflect.ValueOf(float32(Round(field.Float(), precision))))
 	}
 }
 
-// RoundUpFloatStruct - round up float struct fields to certain precision
+// RoundFloatStruct - round up float struct fields to certain precision
 // Constraint: simple floats, array and slice.
 // 'obj': ptr struct, fields can be value, not ptr.
 // 'precision': round to.
-func RoundUpFloatStruct(obj interface{}, precision int) error {
+func RoundFloatStruct(obj interface{}, precision int) error {
 	objValue := reflect.ValueOf(obj)
 	// struct ptr check
 	if objValue.Kind() != reflect.Ptr {
@@ -178,10 +178,10 @@ func RoundUpFloatStruct(obj interface{}, precision int) error {
 		// simple float
 		case reflect.Float64, reflect.Float32:
 			if field.Kind() == reflect.Float64 {
-				field.Set(reflect.ValueOf(RoundUp(field.Float(), precision)))
+				field.Set(reflect.ValueOf(Round(field.Float(), precision)))
 				break
 			}
-			field.Set(reflect.ValueOf(float32(RoundUp(field.Float(), precision))))
+			field.Set(reflect.ValueOf(float32(Round(field.Float(), precision))))
 		// array and slice float
 		case reflect.Array, reflect.Slice:
 			if field.Len() == 0 {
@@ -198,22 +198,43 @@ func RoundUpFloatStruct(obj interface{}, precision int) error {
 	return nil
 }
 
-// BinarySearch - universal types binary search func.
-// Returns the index of the searching value, else returns -1.
-func BinarySearch[T constraints.Ordered](elems []T, search T) int {
-	start, mid, end := 0, 0, len(elems)-1
+// Intersection - intersection of two arrays. Returns new slice.
+func Intersection[T cmp.Ordered](left, right []T) ([]T, error) {
+	if len(left) != len(right) {
+		return nil, ErrLenSlices
+	}
 
-	for start <= end {
-		mid = (start + end) >> 1
-		switch {
-		case elems[mid] > search:
-			end = mid - 1
-		case elems[mid] < search:
-			start = mid + 1
-		default:
-			return mid
+	var (
+		minimum = slices.Min([]int{len(left), len(right)})
+		out     = make([]T, 0, minimum)
+		check   = make(map[T]struct{}, minimum)
+	)
+
+	for _, i := range left {
+		for _, j := range right {
+			if i == j && check[i] == struct{}{} {
+				out = append(out, i)
+				check[i] = struct{}{}
+			}
 		}
 	}
 
-	return -1
+	return out, nil
+}
+
+// SlicesConcat - concatenation of multiple slices.
+func SlicesConcat[T any](slices ...[]T) []T {
+	var length, idx int
+
+	for _, slice := range slices {
+		length += len(slice)
+	}
+
+	res := make([]T, length)
+
+	for _, s := range slices {
+		idx += copy(res[idx:], s)
+	}
+
+	return res
 }

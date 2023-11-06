@@ -11,9 +11,7 @@ issues:
 
 linters-settings:
   dupl:
-    # Tokens count to trigger issue.
-    # Default: 150
-    threshold: 300
+    threshold: 60
   errcheck:
     check-blank: true
   govet:
@@ -47,7 +45,7 @@ linters:
     - gofmt
     - goimports
     - revive
-    - gomnd
+#    - gomnd
     - goprintffuncname
     - gosec
     - gosimple
