@@ -199,27 +199,16 @@ func RoundFloatStruct(obj interface{}, precision int) error {
 }
 
 // Intersection - intersection of two arrays. Returns new slice.
-func Intersection[T cmp.Ordered](left, right []T) ([]T, error) {
-	if len(left) != len(right) {
-		return nil, ErrLenSlices
-	}
+func Intersection[T cmp.Ordered](sl1, sl2 []T) []T {
+	return slices.DeleteFunc(sl1, func(code T) bool {
+		return !slices.Contains(sl2, code)
+	})
+}
 
-	var (
-		minimum = slices.Min([]int{len(left), len(right)})
-		out     = make([]T, 0, minimum)
-		check   = make(map[T]struct{}, minimum)
-	)
-
-	for _, i := range left {
-		for _, j := range right {
-			if i == j && check[i] == struct{}{} {
-				out = append(out, i)
-				check[i] = struct{}{}
-			}
-		}
-	}
-
-	return out, nil
+func IntersectionWithConcat[T cmp.Ordered](sl1, sl2, sl3 []T) []T {
+	return slices.DeleteFunc(sl1, func(code T) bool {
+		return !slices.Contains(sl2, code) && !slices.Contains(sl3, code)
+	})
 }
 
 // SlicesConcat - concatenation of multiple slices.

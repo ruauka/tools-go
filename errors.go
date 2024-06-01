@@ -10,5 +10,4 @@ var (
 	ErrWrongFieldValueType = errors.New("wrong field value type")
 	ErrNotPointerStruct    = errors.New("struct passed not by pointer")
 	ErrPointerStruct       = errors.New("struct passed by pointer")
-	ErrLenSlices           = errors.New("slices must be the same length")
 )

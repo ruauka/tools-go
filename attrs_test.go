@@ -593,10 +593,9 @@ func TestIntersection(t *testing.T) {
 	}
 
 	type cases[T any] struct {
-		args        args[T]
-		expected    []T
-		expectedErr error
-		testName    string
+		args     args[T]
+		expected []T
+		testName string
 	}
 
 	testCasesInts := []cases[int]{
@@ -605,19 +604,10 @@ func TestIntersection(t *testing.T) {
 			expected: []int{1, 2},
 			testName: "Ints. OK",
 		},
-		{
-			args:        args[int]{left: []int{1}, right: []int{1, 2}},
-			expectedErr: ErrLenSlices,
-			testName:    "Ints. Error length",
-		},
 	}
 	for _, testCase := range testCasesInts {
 		t.Run(testCase.testName, func(t *testing.T) {
-			actual, err := Intersection(testCase.args.left, testCase.args.right)
-			if err != nil {
-				require.ErrorIs(t, testCase.expectedErr, err)
-			}
-
+			actual := Intersection(testCase.args.left, testCase.args.right)
 			require.Equal(t, testCase.expected, actual)
 		})
 	}
@@ -628,19 +618,10 @@ func TestIntersection(t *testing.T) {
 			expected: []float64{1, 2},
 			testName: "Floats. OK",
 		},
-		{
-			args:        args[float64]{left: []float64{1}, right: []float64{1, 2}},
-			expectedErr: ErrLenSlices,
-			testName:    "Floats. Error length",
-		},
 	}
 	for _, testCase := range testCasesFloats {
 		t.Run(testCase.testName, func(t *testing.T) {
-			actual, err := Intersection(testCase.args.left, testCase.args.right)
-			if err != nil {
-				require.ErrorIs(t, testCase.expectedErr, err)
-			}
-
+			actual := Intersection(testCase.args.left, testCase.args.right)
 			require.Equal(t, testCase.expected, actual)
 		})
 	}
@@ -651,19 +632,10 @@ func TestIntersection(t *testing.T) {
 			expected: []string{"aaa", "bbb"},
 			testName: "Strings. OK",
 		},
-		{
-			args:        args[string]{left: []string{"aaa"}, right: []string{"aaa", "bbb"}},
-			expectedErr: ErrLenSlices,
-			testName:    "Strings. Error length",
-		},
 	}
 	for _, testCase := range testCasesStrs {
 		t.Run(testCase.testName, func(t *testing.T) {
-			actual, err := Intersection(testCase.args.left, testCase.args.right)
-			if err != nil {
-				require.ErrorIs(t, testCase.expectedErr, err)
-			}
-
+			actual := Intersection(testCase.args.left, testCase.args.right)
 			require.Equal(t, testCase.expected, actual)
 		})
 	}
@@ -681,13 +653,13 @@ func ExampleIntersection() {
 		strR = []string{"aaa", "bbb", "ddd"}
 	)
 
-	resInts, _ := Intersection(intsL, intsR)
+	resInts := Intersection(intsL, intsR)
 	fmt.Println(resInts)
 
-	resFloats, _ := Intersection(floatsL, floatsR)
+	resFloats := Intersection(floatsL, floatsR)
 	fmt.Println(resFloats)
 
-	resStrs, _ := Intersection(strL, strR)
+	resStrs := Intersection(strL, strR)
 	fmt.Println(resStrs)
 
 	// Output:
