@@ -205,11 +205,11 @@ func Intersection[T cmp.Ordered](sl1, sl2 []T) []T {
 	})
 }
 
-func IntersectionWithConcat[T cmp.Ordered](sl1, sl2, sl3 []T) []T {
-	return slices.DeleteFunc(sl1, func(code T) bool {
-		return !slices.Contains(sl2, code) && !slices.Contains(sl3, code)
-	})
-}
+//func IntersectionWithConcat[T cmp.Ordered](sl1, sl2, sl3 []T) []T {
+//	return slices.DeleteFunc(sl1, func(code T) bool {
+//		return !slices.Contains(sl2, code) && !slices.Contains(sl3, code)
+//	})
+//}
 
 // SlicesConcat - concatenation of multiple slices.
 func SlicesConcat[T any](slices ...[]T) []T {
