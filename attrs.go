@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"math"
 	"reflect"
-	"slices"
 )
 
 // float bit size.
@@ -201,7 +200,7 @@ func RoundFloatStruct(obj interface{}, precision int) error {
 // Intersection - intersection of two arrays. Returns new slice.
 func Intersection[T cmp.Ordered](left, right []T) []T {
 	var (
-		minimum = slices.Min([]int{len(left), len(right)})
+		minimum = min(len(left), len(right))
 		out     = make([]T, 0, minimum)
 		check   = make(map[T]struct{}, minimum)
 	)
