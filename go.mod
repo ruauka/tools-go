@@ -1,6 +1,6 @@
-module tools-go
+module github.com/ruauka/tools-go
 
-go 1.21.3
+go 1.22.4
 
 require github.com/stretchr/testify v1.9.0
 
