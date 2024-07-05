@@ -39,7 +39,7 @@ package main
 import (
     "fmt"
     
-    attrs "github.com/ruauka/attrs-go"
+	"github.com/ruauka/tools-go/attrs"
 )
 
 type User struct {
@@ -62,8 +62,8 @@ package main
 
 import (
     "fmt"
-    
-    attrs "github.com/ruauka/attrs-go"
+
+  "github.com/ruauka/tools-go/attrs"
 )
 
 type User struct {
@@ -89,8 +89,8 @@ package main
 import (
     "fmt"
     "reflect"
-    
-    attrs "github.com/ruauka/attrs-go"
+
+  "github.com/ruauka/tools-go/attrs"
 )
 
 var (
@@ -118,8 +118,8 @@ package main
 
 import (
     "fmt"
-    
-    attrs "github.com/ruauka/attrs-go"
+
+  "github.com/ruauka/tools-go/attrs"
 )
 
 type User struct {
@@ -167,8 +167,8 @@ package main
 
 import (
     "fmt"
-    
-    attrs "github.com/ruauka/attrs-go"
+
+  "github.com/ruauka/tools-go/attrs"
 )
 
 type Foo struct {
@@ -223,8 +223,8 @@ package main
 
 import (
     "fmt"
-    
-    attrs "github.com/ruauka/attrs-go"
+
+  "github.com/ruauka/tools-go/attrs"
 )
 
 var (
@@ -258,8 +258,8 @@ package main
 
 import (
     "fmt"
-  
-    attrs "github.com/ruauka/attrs-go"
+
+  "github.com/ruauka/tools-go/attrs"
 )
 
 func main() {

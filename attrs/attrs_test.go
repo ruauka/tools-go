@@ -1,4 +1,4 @@
-package attrs_go
+package attrs
 
 import (
 	"fmt"
@@ -38,28 +38,28 @@ func TestGetAttr(t *testing.T) {
 			obj:         &struct{ Username string }{Username: name},
 			fieldName:   "Username",
 			expected:    nil,
-			expectedErr: ErrPointerStruct,
+			expectedErr: errPointerStruct,
 			testName:    "OK. Ptr struct",
 		},
 		{
 			obj:         "not struct arg",
 			fieldName:   "Username",
 			expected:    nil,
-			expectedErr: ErrNotStruct,
+			expectedErr: errNotStruct,
 			testName:    "ERR. Arg not struct",
 		},
 		{
 			obj:         struct{ Username string }{Username: name},
 			fieldName:   "not in struct field",
 			expected:    nil,
-			expectedErr: ErrFieldNotInStruct,
+			expectedErr: errFieldNotInStruct,
 			testName:    "ERR. Field not struct",
 		},
 		{
 			obj:         struct{ username string }{username: name},
 			fieldName:   "username",
 			expected:    nil,
-			expectedErr: ErrUnexportedField,
+			expectedErr: errUnexportedField,
 			testName:    "ERR. Unexported field",
 		},
 	}
@@ -122,35 +122,35 @@ func TestSetAttr(t *testing.T) {
 			obj:         struct{ Username string }{Username: curValue},
 			fieldName:   fieldUsername,
 			newValue:    newValue,
-			expectedErr: ErrNotPointerStruct,
+			expectedErr: errNotPointerStruct,
 			testName:    "ERR. Struct passed not by pointer",
 		},
 		{
 			obj:         &newValue,
 			fieldName:   fieldUsername,
 			newValue:    newValue,
-			expectedErr: ErrNotStruct,
+			expectedErr: errNotStruct,
 			testName:    "ERR. Not struct arg",
 		},
 		{
 			obj:         &struct{ Username string }{Username: curValue},
 			fieldName:   "Field not in struct",
 			newValue:    newValue,
-			expectedErr: ErrFieldNotInStruct,
+			expectedErr: errFieldNotInStruct,
 			testName:    "ERR. Field not in struct",
 		},
 		{
 			obj:         &struct{ Username int }{Username: 0},
 			fieldName:   fieldUsername,
 			newValue:    newValue,
-			expectedErr: ErrWrongFieldValueType,
+			expectedErr: errWrongFieldValueType,
 			testName:    "ERR. Wrong field value type",
 		},
 		{
 			obj:         &struct{ username string }{username: curValue},
 			fieldName:   strings.ToLower(fieldUsername),
 			newValue:    newValue,
-			expectedErr: ErrUnexportedField,
+			expectedErr: errUnexportedField,
 			testName:    "ERR. Unexported field",
 		},
 	}
@@ -337,7 +337,7 @@ func TestSetStructAttrs(t *testing.T) {
 				Married:  curMarried,
 				Friends:  curFriends,
 			},
-			expectedErr: ErrUnexportedField,
+			expectedErr: errUnexportedField,
 			testName:    "ERR. Value fields. Err in GetAttr, field not exported",
 		},
 		{
@@ -358,7 +358,7 @@ func TestSetStructAttrs(t *testing.T) {
 				Married:  curMarried,
 				Friends:  curFriends,
 			},
-			expectedErr: ErrWrongFieldValueType,
+			expectedErr: errWrongFieldValueType,
 			testName:    "ERR. Value fields. Err in SetAttr, Wrong field value type",
 		},
 		{
@@ -375,7 +375,7 @@ func TestSetStructAttrs(t *testing.T) {
 				Married:  curMarried,
 				Friends:  curFriends,
 			},
-			expectedErr: ErrNotStruct,
+			expectedErr: errNotStruct,
 			testName:    "ERR. Value fields. Arg not struct",
 		},
 	}
@@ -515,21 +515,21 @@ func TestRoundFloatStruct(t *testing.T) {
 			obj:         foo,
 			precision:   3,
 			expected:    foo,
-			expectedErr: ErrNotPointerStruct,
+			expectedErr: errNotPointerStruct,
 			testName:    "ERR. Struct passed not by pointer",
 		},
 		{
 			obj:         &notStruct,
 			precision:   3,
 			expected:    &notStruct,
-			expectedErr: ErrNotStruct,
+			expectedErr: errNotStruct,
 			testName:    "ERR. Arg not struct",
 		},
 		{
 			obj:         &struct{ field1 float64 }{field1: 0},
 			precision:   3,
 			expected:    &struct{ field1 float64 }{field1: 0},
-			expectedErr: ErrUnexportedField,
+			expectedErr: errUnexportedField,
 			testName:    "ERR. Unexported field",
 		},
 		{

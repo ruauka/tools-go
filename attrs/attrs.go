@@ -4,12 +4,13 @@
  * License: MIT (See License file for full text).
  */
 
-// Package attrs_go - tool for working with structure fields. Analog of Python 'getattr' and 'setattr',
+// Package attrs - tool for working with structure fields. Analog of Python 'getattr' and 'setattr',
 // also some useful funcs to change and rounding struct fields.
-package attrs_go //nolint:revive,stylecheck
+package attrs
 
 import (
 	"cmp"
+	"errors"
 	"fmt"
 	"math"
 	"reflect"
@@ -21,6 +22,15 @@ const (
 	bitSize64 = 64
 )
 
+var (
+	errNotStruct           = errors.New("not a struct")
+	errFieldNotInStruct    = errors.New("field not in struct")
+	errUnexportedField     = errors.New("field not exported")
+	errWrongFieldValueType = errors.New("wrong field value type")
+	errNotPointerStruct    = errors.New("struct passed not by pointer")
+	errPointerStruct       = errors.New("struct passed by pointer")
+)
+
 // GetAttr - get struct field value.
 // 'obj': value param, fields can be ptr or value.
 // 'fieldName': value param.
@@ -29,21 +39,21 @@ func GetAttr(obj interface{}, fieldName string) (interface{}, error) {
 	objValue := reflect.ValueOf(obj)
 	// struct ptr check
 	if objValue.Kind() == reflect.Ptr {
-		return nil, ErrPointerStruct
+		return nil, errPointerStruct
 	}
 	// is struct check
 	if objValue.Kind() != reflect.Struct {
-		return nil, ErrNotStruct
+		return nil, errNotStruct
 	}
 	// get field value
 	field := objValue.FieldByName(fieldName)
 	// is field in struct
 	if !field.IsValid() {
-		return nil, ErrFieldNotInStruct
+		return nil, errFieldNotInStruct
 	}
 	// is field exported
 	if !field.CanInterface() {
-		return nil, ErrUnexportedField
+		return nil, errUnexportedField
 	}
 	// field  ptr check
 	if field.Kind() == reflect.Ptr {
@@ -64,11 +74,11 @@ func SetAttr(obj, newValue interface{}, fieldName string) error {
 	)
 	// struct ptr check
 	if objValue.Kind() != reflect.Ptr {
-		return ErrNotPointerStruct
+		return errNotPointerStruct
 	}
 	// is struct check
 	if objValue.Elem().Kind() != reflect.Struct {
-		return ErrNotStruct
+		return errNotStruct
 	}
 	// get field value
 	objValue = objValue.Elem().FieldByName(fieldName)
@@ -80,15 +90,15 @@ func SetAttr(obj, newValue interface{}, fieldName string) error {
 	}
 	// is field in struct
 	if !field.IsValid() {
-		return ErrFieldNotInStruct
+		return errFieldNotInStruct
 	}
 	// types check
 	if field.Type() != reflect.TypeOf(newValue) {
-		return ErrWrongFieldValueType
+		return errWrongFieldValueType
 	}
 	// is field exported
 	if !field.CanSet() {
-		return ErrUnexportedField
+		return errUnexportedField
 	}
 	// set value
 	field.Set(reflect.ValueOf(newValue))
@@ -104,7 +114,7 @@ func SetStructAttrs(curObj, newObj interface{}) error {
 	objValue := reflect.ValueOf(newObj)
 	// is struct check
 	if objValue.Kind() != reflect.Struct {
-		return ErrNotStruct
+		return errNotStruct
 	}
 
 	for i := 0; i < objValue.NumField(); i++ {
@@ -157,11 +167,11 @@ func RoundFloatStruct(obj interface{}, precision int) error {
 	objValue := reflect.ValueOf(obj)
 	// struct ptr check
 	if objValue.Kind() != reflect.Ptr {
-		return ErrNotPointerStruct
+		return errNotPointerStruct
 	}
 	// is struct check
 	if objValue.Elem().Kind() != reflect.Struct {
-		return ErrNotStruct
+		return errNotStruct
 	}
 	// get value from ptr
 	objValue = objValue.Elem()
@@ -170,7 +180,7 @@ func RoundFloatStruct(obj interface{}, precision int) error {
 		field := objValue.Field(i)
 		// is field exported
 		if !field.CanSet() {
-			return ErrUnexportedField
+			return errUnexportedField
 		}
 		// float types check
 		switch field.Kind() {
@@ -191,6 +201,7 @@ func RoundFloatStruct(obj interface{}, precision int) error {
 				break
 			}
 			iterRound(field, precision, bitSize32)
+		default:
 		}
 	}
 
