@@ -1,4 +1,4 @@
-module github.com/ruauka/attrs-go
+module github.com/ruauka/tools-go
 
 go 1.21
 
