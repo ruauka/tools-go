@@ -25,7 +25,7 @@ Tool for working with structure fields:
 ## Installation
 To install the package run
 ```bash
-go get -u github.com/ruauka/attrs-go
+go get -u github.com/ruauka/tools-go
 ```
 
 ## Usage
