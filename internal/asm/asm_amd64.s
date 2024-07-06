@@ -223,8 +223,7 @@ LBB11_6:
     VMULPS (DI)(CX*4), Y1, Y2
     VMULPS 32(DI)(CX*4), Y1, Y3
     VMULPS 64(DI)(CX*4), Y1, Y4
-    VMULPS 96(DI)(CX*4), Y1,
-    Y5
+    VMULPS 96(DI)(CX*4), Y1, Y5
     VMOVUPS Y2, (DI)(CX*4)
     VMOVUPS Y3, 32(DI)(CX*4)
     VMOVUPS Y4, 64(DI)(CX*4)
@@ -457,8 +456,7 @@ LBB0_7:
 // Requires: AVX, AVX2, SSE
 TEXT ·AddNum32(SB), NOSPLIT, $0-28
     MOVQ x_base+0(FP), DI
-    MOVSS a+24(FP),
-    X0
+    MOVSS a+24(FP), X0
     MOVQ x_len+8(FP), SI
     TESTQ SI, SI
     JE LBB3_11
@@ -696,8 +694,7 @@ body:
     VMOVUPD -32(CX)(DX*8), Y4
     VMOVUPD (CX)(DX*8), Y5
     VCMPPD $0x01, Y1, Y2, Y2
-    VMASKMOVPD Y1, Y2,
-    -96(CX)(DX*8)
+    VMASKMOVPD Y1, Y2, -96(CX)(DX*8)
     VCMPPD $0x01, Y1, Y3, Y2
     VMASKMOVPD Y1, Y2, -64(CX)(DX*8)
     VCMPPD $0x01, Y1, Y4, Y2
