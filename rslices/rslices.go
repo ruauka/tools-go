@@ -4,10 +4,11 @@ import "golang.org/x/exp/constraints"
 
 // Sum sums the values in a collection. If collection is empty 0 is returned.
 func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
-	var sum T = 0
+	var sum T
 	for _, val := range collection {
 		sum += val
 	}
+
 	return sum
 }
 
