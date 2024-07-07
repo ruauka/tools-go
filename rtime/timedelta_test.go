@@ -1,4 +1,4 @@
-package attrs_go
+package rtime
 
 import (
 	"fmt"

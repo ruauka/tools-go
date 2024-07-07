@@ -9,11 +9,12 @@
 package attrs
 
 import (
-	"cmp"
 	"errors"
 	"fmt"
 	"math"
 	"reflect"
+
+	"golang.org/x/exp/constraints"
 )
 
 // float bit size.
@@ -141,8 +142,8 @@ func SetStructAttrs(curObj, newObj interface{}) error {
 }
 
 // Round - float64 | float32 rounder to certain precision.
-func Round[V float64 | float32](value V, precision int) V {
-	return V(math.Round(float64(value)*(math.Pow10(precision))) / math.Pow10(precision))
+func Round[T constraints.Float](value T, precision int) T {
+	return T(math.Round(float64(value)*(math.Pow10(precision))) / math.Pow10(precision))
 }
 
 // iterRound - round any float. Private func.
@@ -206,41 +207,4 @@ func RoundFloatStruct(obj interface{}, precision int) error {
 	}
 
 	return nil
-}
-
-// Intersection - intersection of two arrays. Returns new slice.
-func Intersection[T cmp.Ordered](left, right []T) []T {
-	var (
-		minimum = min(len(left), len(right))
-		out     = make([]T, 0, minimum)
-		check   = make(map[T]struct{}, minimum)
-	)
-
-	for _, i := range left {
-		for _, j := range right {
-			if i == j && check[i] == struct{}{} {
-				out = append(out, i)
-				check[i] = struct{}{}
-			}
-		}
-	}
-
-	return out
-}
-
-// SlicesConcat - concatenation of multiple slices.
-func SlicesConcat[T any](slices ...[]T) []T {
-	var length, idx int
-
-	for _, slice := range slices {
-		length += len(slice)
-	}
-
-	res := make([]T, length)
-
-	for _, s := range slices {
-		idx += copy(res[idx:], s)
-	}
-
-	return res
 }

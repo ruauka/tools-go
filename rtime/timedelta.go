@@ -1,4 +1,4 @@
-package attrs_go //nolint:revive,stylecheck
+package rtime
 
 import "time"
 
