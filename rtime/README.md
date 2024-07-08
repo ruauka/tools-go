@@ -13,9 +13,10 @@ Package with time functions:
 
 ## Content
 - [TimeDelta](#timedelta)
+- [Months](#months)
 
 ### TimeDelta
-The difference between the two dates for each value
+The difference between the two dates for each value.
 
 ```go
 package main
@@ -36,5 +37,28 @@ func main() {
     res := rtime.Elapsed(from, to)
     fmt.Println(res)           // &{1 0 0 0 0 0 0 12 365 8760 525600 31536000}
     fmt.Println(res.TotalDays) // 365
+}
+```
+
+The difference between the two dates.
+### Months
+```go
+package main
+
+import (
+    "fmt"
+    "time"
+    
+    "github.com/ruauka/tools-go/rtime"
+)
+
+func main() {
+    var (
+        d1 = time.Date(2022, 2, 28, 0, 0, 0, 0, time.UTC)
+        d2 = time.Date(2023, 1, 30, 0, 0, 0, 0, time.UTC)
+    )
+    
+    res := rtime.Months(d1, d2)
+    fmt.Println(res) // 10
 }
 ```

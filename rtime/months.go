@@ -1,15 +1,16 @@
+// Package rtime - time functions.
 package rtime
 
 import "time"
 
-// Months - Возвращает кол-во месяцев между двумя датами.
+// Months - The number of months between two dates.
 func Months(d1, d2 time.Time) int {
 	var absOff = false
 
-	// если дата 1 больше 2, то меняем их местами
+	// if date 1 is greater than 2, then swap them
 	if d1.After(d2) {
 		d2, d1 = d1, d2
-		// Отключаем расчет по модулю
+		// disabling the calculation modulo
 		absOff = true
 	}
 
@@ -25,7 +26,7 @@ func Months(d1, d2 time.Time) int {
 	return absInt(result)
 }
 
-// ExtraMonth - расчет надбавки в виде одного месяца.
+// ExtraMonth - calculation of the allowance in the form of one month.
 func extraMonth(d1, d2 time.Time) int {
 	_, d1Month, d1Day := d1.Date()
 	_, d2Month, d2Day := d2.Date()
@@ -50,17 +51,17 @@ func extraMonth(d1, d2 time.Time) int {
 	return 0
 }
 
-// IsLastDayInMonth - Проверка, что день является последним днем месяца.
+// IsLastDayInMonth - Checking that the day is the last day of the month.
 func isLastDayInMonth(d time.Time) bool {
 	return d.Day() == lastDayInMonth(d)
 }
 
-// LastDayInMonth - возвращает последний день месяца.
+// LastDayInMonth - the last day of the month.
 func lastDayInMonth(d time.Time) int {
 	year, month, _ := d.Date()
 	switch month {
 	case time.February:
-		// Проверка высокосного года для февраля
+		// checking the leap year for February
 		if year%4 == 0 {
 			return 29
 		}
@@ -72,7 +73,7 @@ func lastDayInMonth(d time.Time) int {
 	}
 }
 
-// absInt - модуль int.
+// absInt - module int.
 func absInt(x int) int {
 	if x < 0 {
 		return -x
