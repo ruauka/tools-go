@@ -5,7 +5,7 @@ import "time"
 
 // Months - The number of months between two dates.
 func Months(d1, d2 time.Time) int {
-	var absOff = false
+	var absOff bool
 
 	// if date 1 is greater than 2, then swap them
 	if d1.After(d2) {

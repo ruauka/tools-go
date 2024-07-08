@@ -5,7 +5,7 @@
  */
 
 // Package attrs - tool for working with structure fields. Analog of Python 'getattr' and 'setattr',
-// also some useful funcs to change and rounding struct fields.
+// also some funcs to change and rounding struct fields.
 package attrs
 
 import (
