@@ -19,30 +19,35 @@ func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collec
 	return sum
 }
 
+// Mul - multiplying slice x by slice y.
 func Mul[T constraints.Float](x, y []T) {
 	for i := 0; i < len(x); i++ {
 		x[i] *= y[i]
 	}
 }
 
+// MulNum - multiplying slice x by a.
 func MulNum[S ~[]E, E constraints.Float](x S, a E) {
 	for i := 0; i < len(x); i++ {
 		x[i] *= a
 	}
 }
 
+// Add - adding slice x to slice y.
 func Add[T constraints.Float](x, y []T) {
 	for i := 0; i < len(x); i++ {
 		x[i] += y[i]
 	}
 }
 
+// AddNum - adding slice x by a.
 func AddNum[S ~[]E, E constraints.Float](x S, a E) {
 	for i := 0; i < len(x); i++ {
 		x[i] += a
 	}
 }
 
+// MaximumNum - set 0 if a < 0.
 func MaximumNum[S ~[]E, E constraints.Float](x S, a E) {
 	for i := 0; i < len(x); i++ {
 		if x[i] < a {
@@ -51,7 +56,7 @@ func MaximumNum[S ~[]E, E constraints.Float](x S, a E) {
 	}
 }
 
-// IsIntersect return ok or not for intersection slice.
+// IsIntersect - return ok or not for intersection slice.
 func IsIntersect[E comparable](s1, s2 []E) bool {
 	for _, i := range s1 {
 		for _, j := range s2 {
@@ -84,6 +89,7 @@ func Intersection[T cmp.Ordered](s1, s2 []T) []T {
 	return out
 }
 
+// Concat - concatenation two slices.
 func Concat[S ~[]E, E any](collections ...S) S {
 	var size int
 

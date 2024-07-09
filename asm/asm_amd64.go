@@ -75,7 +75,7 @@ func MaximumNum32(x []float32, a float32) {
 	asm.MaximumNum32(x, a)
 }
 
-// MaximumNum32 element-wise maximum of []float64 elements with number with optimization in goasm.
+// MaximumNum64 element-wise maximum of []float64 elements with number with optimization in goasm.
 func MaximumNum64(x []float64, a float64) {
 	asm.MaximumNum64(x, a)
 }

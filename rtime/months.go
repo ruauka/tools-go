@@ -42,10 +42,9 @@ func extraMonth(d1, d2 time.Time) int {
 	if d1Day > d2Day {
 		return 1
 	}
-	if isLastDayInMonth(d1) {
-		if d1Month > d2Month {
-			return 1
-		}
+
+	if isLastDayInMonth(d1) && d1Month > d2Month {
+		return 1
 	}
 
 	return 0
@@ -53,16 +52,16 @@ func extraMonth(d1, d2 time.Time) int {
 
 // IsLastDayInMonth - Checking that the day is the last day of the month.
 func isLastDayInMonth(d time.Time) bool {
-	return d.Day() == lastDayInMonth(d)
+	year, month, day := d.Date()
+	return day == lastDayInMonth(year, month)
 }
 
 // LastDayInMonth - the last day of the month.
-func lastDayInMonth(d time.Time) int {
-	year, month, _ := d.Date()
+func lastDayInMonth(year int, month time.Month) int {
 	switch month {
 	case time.February:
 		// checking the leap year for February
-		if year%4 == 0 {
+		if IsLeapYear(year) {
 			return 29
 		}
 		return 28
@@ -79,4 +78,12 @@ func absInt(x int) int {
 		return -x
 	}
 	return x
+}
+
+// IsLeapYear check leap year.
+func IsLeapYear(year int) bool {
+	if year%4 == 0 && year%100 != 0 || year%400 == 0 {
+		return true
+	}
+	return false
 }

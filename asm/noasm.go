@@ -3,6 +3,7 @@
 // Package asm - asm functions. Build for ARM64.
 package asm
 
+//nolint:depguard
 import "github.com/ruauka/tools-go/rslices"
 
 // Sum32 sums the values []float32 if not support optimization in goasm.
