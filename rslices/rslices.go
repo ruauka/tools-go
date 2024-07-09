@@ -1,12 +1,14 @@
+// Package rslices - slices functions.
 package rslices
 
 import (
 	"cmp"
+	"slices"
 
 	"golang.org/x/exp/constraints"
 )
 
-// Sum sums the values in a collection. If collection is empty 0 is returned.
+// Sum - sums the values in a collection. If collection is empty 0 is returned.
 func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
 	var sum T
 
@@ -38,6 +40,14 @@ func Add[T constraints.Float](x, y []T) {
 func AddNum[S ~[]E, E constraints.Float](x S, a E) {
 	for i := 0; i < len(x); i++ {
 		x[i] += a
+	}
+}
+
+func MaximumNum[S ~[]E, E constraints.Float](x S, a E) {
+	for i := 0; i < len(x); i++ {
+		if x[i] < a {
+			x[i] = 0
+		}
 	}
 }
 
@@ -74,19 +84,21 @@ func Intersection[T cmp.Ordered](s1, s2 []T) []T {
 	return out
 }
 
-// SlicesConcat - concatenation of multiple slices.
-func SlicesConcat[T any](slices ...[]T) []T {
-	var length, idx int
+func Concat[S ~[]E, E any](collections ...S) S {
+	var size int
 
-	for _, slice := range slices {
-		length += len(slice)
+	for _, collection := range collections {
+		size += len(collection)
+		if size < 0 {
+			panic("len out of range")
+		}
 	}
 
-	res := make([]T, length)
+	newSl := slices.Grow[S](nil, size)
 
-	for _, s := range slices {
-		idx += copy(res[idx:], s)
+	for _, collection := range collections {
+		newSl = append(newSl, collection...)
 	}
 
-	return res
+	return newSl
 }

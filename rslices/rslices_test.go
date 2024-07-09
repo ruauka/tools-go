@@ -88,8 +88,8 @@ func ExampleIntersection() {
 	// [aaa bbb]
 }
 
-func TestSlicesConcat(t *testing.T) {
-	TestCasesInts := []struct {
+func TestConcat(t *testing.T) {
+	testCasesInts := []struct {
 		sl1, sl2, sl3 []int
 		expected      []int
 		testName      string
@@ -103,14 +103,14 @@ func TestSlicesConcat(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range TestCasesInts {
+	for _, testCase := range testCasesInts {
 		t.Run(testCase.testName, func(t *testing.T) {
-			actual := SlicesConcat(testCase.sl1, testCase.sl2, testCase.sl3)
+			actual := Concat(testCase.sl1, testCase.sl2, testCase.sl3)
 			require.Equal(t, testCase.expected, actual)
 		})
 	}
 
-	TestCases := []struct {
+	testCasesStrs := []struct {
 		sl1, sl2, sl3 []string
 		expected      []string
 		testName      string
@@ -124,15 +124,15 @@ func TestSlicesConcat(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range TestCases {
+	for _, testCase := range testCasesStrs {
 		t.Run(testCase.testName, func(t *testing.T) {
-			actual := SlicesConcat(testCase.sl1, testCase.sl2, testCase.sl3)
+			actual := Concat(testCase.sl1, testCase.sl2, testCase.sl3)
 			require.Equal(t, testCase.expected, actual)
 		})
 	}
 }
 
-func ExampleSlicesConcat() {
+func ExampleConcat() {
 	var (
 		ints1 = []int{1, 2, 3}
 		ints2 = []int{4, 5, 6}
@@ -143,10 +143,10 @@ func ExampleSlicesConcat() {
 		strs3 = []string{"7", "8", "9"}
 	)
 
-	ints := SlicesConcat(ints1, ints2, ints3)
+	ints := Concat(ints1, ints2, ints3)
 	fmt.Println(ints)
 
-	strs := SlicesConcat(strs1, strs2, strs3)
+	strs := Concat(strs1, strs2, strs3)
 	fmt.Println(strs)
 
 	// Output:
