@@ -2,8 +2,6 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
 github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/ozontech/allure-go v0.6.32 h1:dGu9zdx1b4kFc8jxM0RKjk433kbCgZBgRwewdcE8xLA=
-github.com/ozontech/allure-go v0.6.32/go.mod h1:1miTnIzBVHscRzMf/lBL+iJk8TXFHxrN3hKVwshZ3xk=
 github.com/ozontech/allure-go/pkg/allure v0.6.13 h1:vkLSIvOEERHTxe+oq8DXDu/m+kLnVUkrXNN8xTKuKU4=
 github.com/ozontech/allure-go/pkg/allure v0.6.13/go.mod h1:4oEG2yq+DGOzJS/ZjPc87C/mx3tAnlYpYonk77Ru/vQ=
 github.com/ozontech/allure-go/pkg/framework v0.6.32 h1:xlqGCuuthbt+bpAeAd8Foei0XLtJYpDsv5XVYoOtNJE=

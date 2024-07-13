@@ -81,7 +81,7 @@ import (
 func main() {
     var (
         s32_1          = []float32{1, 2, 3}
-        num_32 float32 =64
+        num_32 float32 = 2
         
         s64_1          = []float64{1, 2, 3}
         num_64 float64 = 2

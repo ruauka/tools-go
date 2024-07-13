@@ -4,8 +4,6 @@ github.com/davecgh/go-spew/spew
 # github.com/google/uuid v1.3.0
 ## explicit
 github.com/google/uuid
-# github.com/ozontech/allure-go v0.6.32
-## explicit; go 1.17
 # github.com/ozontech/allure-go/pkg/allure v0.6.13
 ## explicit; go 1.17
 github.com/ozontech/allure-go/pkg/allure
