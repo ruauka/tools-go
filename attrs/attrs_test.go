@@ -7,13 +7,16 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ozontech/allure-go/pkg/allure"
+	"github.com/ozontech/allure-go/pkg/framework/provider"
+	"github.com/ozontech/allure-go/pkg/framework/runner"
 	"github.com/stretchr/testify/require"
 )
 
 func TestGetAttr(t *testing.T) {
 	name := "test"
 
-	TestCases := []struct {
+	testCases := []struct {
 		obj         interface{}
 		fieldName   string
 		expected    interface{}
@@ -64,14 +67,26 @@ func TestGetAttr(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range TestCases {
-		t.Run(testCase.testName, func(t *testing.T) {
+	for _, testCase := range testCases {
+		runner.Run(t, testCase.testName, func(t provider.T) {
+			// allure id
+			t.AllureID(fmt.Sprintf("%s_%s", t.Name(), testCase.testName))
+
+			// allure report info
+			t.Epic("attrs")
+			t.Story("GetAttr")
+			t.Description("Check func `GetAttr`")
+			t.WithParameters(
+				allure.NewParameter("obj", testCase.obj),
+				allure.NewParameter("fieldName", testCase.fieldName),
+			)
+
 			actual, err := GetAttr(testCase.obj, testCase.fieldName)
 			if err != nil {
-				require.ErrorIs(t, err, testCase.expectedErr)
+				t.Assert().ErrorIs(err, testCase.expectedErr, fmt.Sprintf("GetAttr error: %v", err))
 			}
 
-			require.Equal(t, testCase.expected, actual)
+			t.Assert().Equal(testCase.expected, actual, "Check GetAttr")
 		})
 	}
 }
@@ -97,7 +112,7 @@ func TestSetAttr(t *testing.T) {
 	newValue := "new_test"
 	fieldUsername := "Username"
 
-	TestCases := []struct {
+	testCases := []struct {
 		obj         interface{}
 		fieldName   string
 		newValue    interface{}
@@ -155,10 +170,24 @@ func TestSetAttr(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range TestCases {
-		t.Run(testCase.testName, func(t *testing.T) {
-			err := SetAttr(testCase.obj, testCase.newValue, testCase.fieldName)
-			require.ErrorIs(t, testCase.expectedErr, err)
+	for _, testCase := range testCases {
+		runner.Run(t, testCase.testName, func(t provider.T) {
+			// allure id
+			t.AllureID(fmt.Sprintf("%s_%s", t.Name(), testCase.testName))
+
+			// allure report info
+			t.Epic("attrs")
+			t.Story("SetAttr")
+			t.Description("Check func `SetAttr`")
+			t.WithParameters(
+				allure.NewParameter("obj", testCase.obj),
+				allure.NewParameter("newValue", testCase.newValue),
+				allure.NewParameter("fieldName", testCase.fieldName),
+			)
+
+			if err := SetAttr(testCase.obj, testCase.newValue, testCase.fieldName); err != nil {
+				t.Assert().ErrorIs(err, testCase.expectedErr, fmt.Sprintf("SetAttr error: %v", err))
+			}
 		})
 	}
 }
@@ -203,7 +232,7 @@ func TestSetStructAttrs(t *testing.T) {
 	newMarried := false
 	newFriends := []string{"new_fried1", "new_friend2"}
 
-	TestCases := []struct {
+	testCases := []struct {
 		curObj      interface{}
 		newObj      interface{}
 		expected    interface{}
@@ -380,14 +409,25 @@ func TestSetStructAttrs(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range TestCases {
-		t.Run(testCase.testName, func(t *testing.T) {
-			err := SetStructAttrs(testCase.curObj, testCase.newObj)
-			if err != nil {
-				require.ErrorIs(t, err, testCase.expectedErr)
+	for _, testCase := range testCases {
+		runner.Run(t, testCase.testName, func(t provider.T) {
+			// allure id
+			t.AllureID(fmt.Sprintf("%s_%s", t.Name(), testCase.testName))
+
+			// allure report info
+			t.Epic("attrs")
+			t.Story("SetStructAttrs")
+			t.Description("Check func `SetStructAttrs`")
+			t.WithParameters(
+				allure.NewParameter("curObj", testCase.curObj),
+				allure.NewParameter("newObj", testCase.newObj),
+			)
+
+			if err := SetStructAttrs(testCase.curObj, testCase.newObj); err != nil {
+				t.Assert().ErrorIs(err, testCase.expectedErr, fmt.Sprintf("SetStructAttrs error: %v", err))
 			}
 
-			require.Equal(t, testCase.expected, testCase.curObj)
+			t.Assert().Equal(testCase.expected, testCase.curObj, "Check SetStructAttrs")
 		})
 	}
 }
@@ -461,7 +501,7 @@ func ExampleRound() {
 	// float64
 }
 
-func TestRoundFloatStruct(t *testing.T) {
+func TestRoundStructFloatFields(t *testing.T) {
 	notStruct := "arg not struct"
 
 	type Foo struct {
@@ -497,7 +537,7 @@ func TestRoundFloatStruct(t *testing.T) {
 		Field8: "field8",
 	}
 
-	TestCases := []struct {
+	testCases := []struct {
 		obj         interface{}
 		precision   int
 		expected    interface{}
@@ -541,19 +581,30 @@ func TestRoundFloatStruct(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range TestCases {
-		t.Run(testCase.testName, func(t *testing.T) {
-			err := RoundFloatStruct(testCase.obj, testCase.precision)
-			if err != nil {
-				require.ErrorIs(t, testCase.expectedErr, err)
+	for _, testCase := range testCases {
+		runner.Run(t, testCase.testName, func(t provider.T) {
+			// allure id
+			t.AllureID(fmt.Sprintf("%s_%s", t.Name(), testCase.testName))
+
+			// allure report info
+			t.Epic("attrs")
+			t.Story("RoundStructFloatFields")
+			t.Description("Check func `RoundStructFloatFields`")
+			t.WithParameters(
+				allure.NewParameter("obj", testCase.obj),
+				allure.NewParameter("precision", testCase.precision),
+			)
+
+			if err := RoundStructFloatFields(testCase.obj, testCase.precision); err != nil {
+				t.Assert().ErrorIs(err, testCase.expectedErr, fmt.Sprintf("RoundStructFloatFields error: %v", err))
 			}
 
-			require.Equal(t, testCase.expected, testCase.obj)
+			t.Assert().Equal(testCase.expected, testCase.obj, "Check RoundStructFloatFields")
 		})
 	}
 }
 
-func ExampleRoundFloatStruct() {
+func ExampleRoundStructFloatFields() {
 	type Foo struct {
 		Field1 float32
 		Field2 float64
@@ -578,7 +629,7 @@ func ExampleRoundFloatStruct() {
 
 	fmt.Printf("%+v\n", *foo)
 
-	if err := RoundFloatStruct(foo, 3); err != nil {
+	if err := RoundStructFloatFields(foo, 3); err != nil {
 		fmt.Println(err)
 	}
 

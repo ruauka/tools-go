@@ -160,11 +160,11 @@ func iterRound(field reflect.Value, precision int, bitSize int) {
 	}
 }
 
-// RoundFloatStruct - round up float struct fields to certain precision
+// RoundStructFloatFields - round up float struct fields to certain precision
 // Constraint: simple floats, array and slice.
 // 'obj': ptr struct, fields can be value, not ptr.
 // 'precision': round to.
-func RoundFloatStruct(obj interface{}, precision int) error {
+func RoundStructFloatFields(obj interface{}, precision int) error {
 	objValue := reflect.ValueOf(obj)
 	// struct ptr check
 	if objValue.Kind() != reflect.Ptr {

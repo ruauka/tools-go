@@ -10,7 +10,7 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/runner"
 )
 
-func TestDaysBetween(t *testing.T) {
+func TestDays(t *testing.T) {
 	testCases := []struct {
 		d1       time.Time
 		d2       time.Time
@@ -21,13 +21,13 @@ func TestDaysBetween(t *testing.T) {
 			d1:       time.Date(2023, 9, 9, 0, 0, 0, 0, time.UTC),
 			d2:       time.Date(2022, 9, 9, 0, 0, 0, 0, time.UTC),
 			expected: 365.0,
-			testName: "Not leap",
+			testName: "OK. Not leap",
 		},
 		{
 			d1:       time.Date(2024, 9, 9, 0, 0, 0, 0, time.UTC),
 			d2:       time.Date(2023, 9, 9, 0, 0, 0, 0, time.UTC),
 			expected: 366.0,
-			testName: "Leap",
+			testName: "OK. Leap",
 		},
 	}
 
@@ -39,7 +39,7 @@ func TestDaysBetween(t *testing.T) {
 			// allure report info
 			t.Epic("rtime")
 			t.Story("Days")
-			t.Description("Check func `DaysBetween`")
+			t.Description("Check func `Days`")
 			t.WithParameters(
 				allure.NewParameter("Date1", testCase.d1),
 				allure.NewParameter("Date2", testCase.d2),
@@ -50,4 +50,15 @@ func TestDaysBetween(t *testing.T) {
 			t.Assert().Equal(testCase.expected, actual, "Checking the calculation of the number of days between two dates")
 		})
 	}
+}
+
+func ExampleDays() {
+	var (
+		d1 = time.Date(2022, 9, 9, 0, 0, 0, 0, time.UTC)
+		d2 = time.Date(2023, 9, 9, 0, 0, 0, 0, time.UTC)
+	)
+
+	res := Days(d1, d2)
+	fmt.Println(res)
+	// Output: 365
 }

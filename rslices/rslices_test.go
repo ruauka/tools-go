@@ -21,7 +21,7 @@ func TestSum(t *testing.T) {
 		{
 			s:        []int{1, 2, 3},
 			expected: 6,
-			testName: "Ints OK",
+			testName: "OK. Ints",
 		},
 	}
 	for _, testCase := range testCasesInts {
@@ -42,11 +42,12 @@ func TestSum(t *testing.T) {
 			t.Assert().Equal(testCase.expected, actual, "Sum of Int slice")
 		})
 	}
+
 	testCasesFloats := []cases[float64]{
 		{
 			s:        []float64{1, 2, 3},
 			expected: 6,
-			testName: "Float OK",
+			testName: "OK. Float",
 		},
 	}
 	for _, testCase := range testCasesFloats {
@@ -101,7 +102,7 @@ func TestMul(t *testing.T) {
 		{
 			args:     args[float32]{s1: []float32{1, 2, 3}, s2: []float32{2, 2, 2}},
 			expected: []float32{2, 4, 6},
-			testName: "Float32 OK",
+			testName: "OK. Float32",
 		},
 	}
 	for _, testCase := range testCasesFloat32 {
@@ -130,7 +131,7 @@ func TestMul(t *testing.T) {
 		{
 			args:     args[float64]{s1: []float64{1, 2, 3}, s2: []float64{2, 2, 2}},
 			expected: []float64{2, 4, 6},
-			testName: "Float64 OK",
+			testName: "OK. Float64",
 		},
 	}
 	for _, testCase := range testCasesFloat64 {
@@ -192,7 +193,7 @@ func TestMulNum(t *testing.T) {
 		{
 			args:     args[float32]{s1: []float32{1, 2, 3}, num: 2},
 			expected: []float32{2, 4, 6},
-			testName: "Float32 OK",
+			testName: "OK. Float32",
 		},
 	}
 	for _, testCase := range testCasesFloat32 {
@@ -221,7 +222,7 @@ func TestMulNum(t *testing.T) {
 		{
 			args:     args[float64]{s1: []float64{1, 2, 3}, num: 2},
 			expected: []float64{2, 4, 6},
-			testName: "Float64 OK",
+			testName: "OK. Float64",
 		},
 	}
 	for _, testCase := range testCasesFloat64 {
@@ -282,7 +283,7 @@ func TestAdd(t *testing.T) {
 		{
 			args:     args[float32]{s1: []float32{1, 2, 3}, s2: []float32{2, 2, 2}},
 			expected: []float32{3, 4, 5},
-			testName: "Float32 OK",
+			testName: "OK. Float32",
 		},
 	}
 	for _, testCase := range testCasesFloat32 {
@@ -311,7 +312,7 @@ func TestAdd(t *testing.T) {
 		{
 			args:     args[float64]{s1: []float64{1, 2, 3}, s2: []float64{2, 2, 2}},
 			expected: []float64{3, 4, 5},
-			testName: "Float64 OK",
+			testName: "OK. Float64",
 		},
 	}
 	for _, testCase := range testCasesFloat64 {
@@ -373,7 +374,7 @@ func TestAddNum(t *testing.T) {
 		{
 			args:     args[float32]{s1: []float32{1, 2, 3}, num: 2},
 			expected: []float32{3, 4, 5},
-			testName: "Float32 OK",
+			testName: "OK. Float32",
 		},
 	}
 	for _, testCase := range testCasesFloat32 {
@@ -402,7 +403,7 @@ func TestAddNum(t *testing.T) {
 		{
 			args:     args[float64]{s1: []float64{1, 2, 3}, num: 2},
 			expected: []float64{3, 4, 5},
-			testName: "Float64 OK",
+			testName: "OK. Float64",
 		},
 	}
 	for _, testCase := range testCasesFloat64 {
@@ -464,7 +465,7 @@ func TestMaximumNum(t *testing.T) {
 		{
 			args:     args[float32]{s1: []float32{1, 2, 3}, num: 2},
 			expected: []float32{0, 2, 3},
-			testName: "Float32 OK",
+			testName: "OK. Float32",
 		},
 	}
 	for _, testCase := range testCasesFloat32 {
@@ -493,7 +494,7 @@ func TestMaximumNum(t *testing.T) {
 		{
 			args:     args[float64]{s1: []float64{1, 2, 3}, num: 2},
 			expected: []float64{0, 2, 3},
-			testName: "Float64 OK",
+			testName: "OK. Float64",
 		},
 	}
 	for _, testCase := range testCasesFloat64 {
@@ -554,7 +555,7 @@ func TestIsIntersect(t *testing.T) {
 		{
 			args:     args[int]{s1: []int{1, 2, 3}, s2: []int{3, 4, 5}},
 			expected: true,
-			testName: "Ints OK",
+			testName: "OK. Ints",
 		},
 	}
 	for _, testCase := range testCasesInts {
@@ -581,7 +582,7 @@ func TestIsIntersect(t *testing.T) {
 		{
 			args:     args[float64]{s1: []float64{1, 2, 3}, s2: []float64{3, 4, 5}},
 			expected: true,
-			testName: "Floats OK",
+			testName: "OK. Floats",
 		},
 	}
 	for _, testCase := range testCasesFloats {
@@ -608,7 +609,7 @@ func TestIsIntersect(t *testing.T) {
 		{
 			args:     args[string]{s1: []string{"aaa", "bbb", "ccc"}, s2: []string{"aaa", "bbb", "ddd"}},
 			expected: true,
-			testName: "Strings OK",
+			testName: "OK. Strings",
 		},
 	}
 	for _, testCase := range testCasesStrs {
@@ -674,7 +675,7 @@ func TestIntersection(t *testing.T) {
 		{
 			args:     args[int]{s1: []int{1, 2, 3}, s2: []int{1, 2, 4}},
 			expected: []int{1, 2},
-			testName: "Ints OK",
+			testName: "OK. Ints",
 		},
 	}
 	for _, testCase := range testCasesInts {
@@ -701,7 +702,7 @@ func TestIntersection(t *testing.T) {
 		{
 			args:     args[float64]{s1: []float64{1, 2, 3}, s2: []float64{1, 2, 4}},
 			expected: []float64{1, 2},
-			testName: "Floats OK",
+			testName: "OK. Floats",
 		},
 	}
 	for _, testCase := range testCasesFloats {
@@ -728,7 +729,7 @@ func TestIntersection(t *testing.T) {
 		{
 			args:     args[string]{s1: []string{"aaa", "bbb", "ccc"}, s2: []string{"aaa", "bbb", "ddd"}},
 			expected: []string{"aaa", "bbb"},
-			testName: "Strings OK",
+			testName: "OK. Strings",
 		},
 	}
 	for _, testCase := range testCasesStrs {
@@ -790,7 +791,7 @@ func TestConcat(t *testing.T) {
 			s2:       []int{4, 5, 6},
 			s3:       []int{7, 8, 9},
 			expected: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
-			testName: "OK Ints",
+			testName: "OK. Ints",
 		},
 	}
 	for _, testCase := range testCasesInts {
@@ -824,7 +825,7 @@ func TestConcat(t *testing.T) {
 			s2:       []string{"4", "5", "6"},
 			s3:       []string{"7", "8", "9"},
 			expected: []string{"1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			testName: "OK Strs",
+			testName: "OK. Strs",
 		},
 	}
 	for _, testCase := range testCasesStrs {

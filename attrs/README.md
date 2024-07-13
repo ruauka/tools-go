@@ -11,7 +11,7 @@ Package for working with structure fields:
 - [SetAttr](#setattr)
 - [Round](#round)
 - [SetStructAttrs](#setstructattrs)
-- [RoundFloatStruct](#roundfloatstruct)
+- [RoundStructFloatFields](#roundStructFloatFields)
 
 ### GetAttr
 Get struct field value.
@@ -76,19 +76,17 @@ import (
     "github.com/ruauka/tools-go/attrs"
 )
 
-var (
-    val32 float32 = 0.12345
-    val64 float64 = 0.12345
-)
-
 func main() {
+    var (
+        val32 float32 = 0.12345
+        val64 float64 = 0.12345
+    )
+	
     res32 := attrs.Round(val32, 3)
     fmt.Println(res32)                 // 0.123
-    fmt.Println(reflect.TypeOf(res32)) // float32
   
     res64 := attrs.Round(val64, 3)
     fmt.Println(res64)                 // 0.123
-    fmt.Println(reflect.TypeOf(res64)) // float64
 }
 ```
 
@@ -142,7 +140,7 @@ func main() {
 }
 ```
 
-### RoundFloatStruct
+### RoundStructFloatFields
 Round up float struct fields to certain precision.
 
 ```go
@@ -185,7 +183,7 @@ func main() {
     //Field7:7 Field8:field8
     //}
     
-    if err := attrs.RoundFloatStruct(foo, 3); err != nil {
+    if err := attrs.RoundStructFloatFields(foo, 3); err != nil {
         fmt.Println(err)
     }
     

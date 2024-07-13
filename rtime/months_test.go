@@ -21,37 +21,37 @@ func TestMonths(t *testing.T) {
 			d1:       time.Date(2022, 9, 9, 0, 0, 0, 0, time.UTC),
 			d2:       time.Date(2023, 9, 9, 0, 0, 0, 0, time.UTC),
 			expected: 12,
-			testName: "Check 1. d2 > d1. Days in the middle of the month",
+			testName: "OK. Check 1. d2 > d1. Days in the middle of the month",
 		},
 		{
 			d1:       time.Date(2023, 9, 9, 0, 0, 0, 0, time.UTC),
 			d2:       time.Date(2022, 9, 9, 0, 0, 0, 0, time.UTC),
 			expected: -12,
-			testName: "Check 2. d1 > d2. Days in the middle of the month",
+			testName: "OK. Check 2. d1 > d2. Days in the middle of the month",
 		},
 		{
 			d1:       time.Date(2023, 3, 31, 0, 0, 0, 0, time.UTC),
 			d2:       time.Date(2022, 4, 29, 0, 0, 0, 0, time.UTC),
 			expected: -11,
-			testName: "Check 3. d1 > d2. d1 has the last day of the month",
+			testName: "OK. Check 3. d1 > d2. d1 has the last day of the month",
 		},
 		{
 			d1:       time.Date(2022, 4, 30, 0, 0, 0, 0, time.UTC),
 			d2:       time.Date(2023, 5, 31, 0, 0, 0, 0, time.UTC),
 			expected: 13,
-			testName: "Check 4. d2 > d1. d1 and d2 have the last day of the month",
+			testName: "OK. Check 4. d2 > d1. d1 and d2 have the last day of the month",
 		},
 		{
 			d1:       time.Date(2022, 5, 31, 0, 0, 0, 0, time.UTC),
 			d2:       time.Date(2023, 4, 29, 0, 0, 0, 0, time.UTC),
 			expected: 10,
-			testName: "Check 5. d2 > d1. 1 has the last day of the month and the day is longer than the day in d2",
+			testName: "OK. Check 5. d2 > d1. 1 has the last day of the month and the day is longer than the day in d2",
 		},
 		{
 			d1:       time.Date(2022, 2, 28, 0, 0, 0, 0, time.UTC),
 			d2:       time.Date(2023, 1, 30, 0, 0, 0, 0, time.UTC),
 			expected: 10,
-			testName: "Check 6. d2 > d1. d1 has the last day of the month and a day less than a day in d2",
+			testName: "OK. Check 6. d2 > d1. d1 has the last day of the month and a day less than a day in d2",
 		},
 	}
 
@@ -74,4 +74,15 @@ func TestMonths(t *testing.T) {
 			t.Assert().Equal(testCase.expected, actual, "Checking the calculation of the difference between two dates in months")
 		})
 	}
+}
+
+func ExampleMonths() {
+	var (
+		d1 = time.Date(2022, 9, 9, 0, 0, 0, 0, time.UTC)
+		d2 = time.Date(2023, 9, 9, 0, 0, 0, 0, time.UTC)
+	)
+
+	res := Months(d1, d2)
+	fmt.Println(res)
+	// Output: 12
 }
