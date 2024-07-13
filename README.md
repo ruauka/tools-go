@@ -7,7 +7,7 @@
 
 ## Overview
 
-The tool contains some useful functions:
+The tool contains some useful packages:
 
 - Attrs - changing and rounding `struct fields` (`getattr`, `setattr`, etc...)
 - Rtime - counting `time`
