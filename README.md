@@ -9,9 +9,10 @@
 
 The tool contains some useful packages:
 
-- Attrs - changing and rounding `struct fields` (`getattr`, `setattr`, etc...)
-- Rtime - counting `time`
-- Rslices - work with `slices`
+- Attrs - changing and rounding `struct fields` (`getattr`, `setattr`, etc...);
+- Rtime - counting `time`;
+- Rslices - work with `slices`;
+- Asm - optimization for `slices` using `Go Assembly`, `SIMD`;
 
 ## Install
 
@@ -34,3 +35,4 @@ go get -u github.com/ruauka/tools-go
 - [Attrs](attrs/README.md)
 - [Rtime](rtime/README.md)
 - [Rslices](rslices/README.md)
+- [Asm](asm/README.md)
