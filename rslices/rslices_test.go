@@ -161,8 +161,8 @@ func ExampleMul() {
 		s32_1 = []float32{1, 2, 3}
 		s32_2 = []float32{2, 2, 2}
 
-		s64_1 = []float32{1, 2, 3}
-		s64_2 = []float32{2, 2, 2}
+		s64_1 = []float64{1, 2, 3}
+		s64_2 = []float64{2, 2, 2}
 	)
 
 	Mul(s32_1, s32_2)
@@ -252,8 +252,8 @@ func ExampleMulNum() {
 		s32_1          = []float32{1, 2, 3}
 		num_32 float32 = 2
 
-		s64_1          = []float32{1, 2, 3}
-		num_64 float32 = 2
+		s64_1          = []float64{1, 2, 3}
+		num_64 float64 = 2
 	)
 
 	MulNum(s32_1, num_32)
@@ -342,8 +342,8 @@ func ExampleAdd() {
 		s32_1 = []float32{1, 2, 3}
 		s32_2 = []float32{2, 2, 2}
 
-		s64_1 = []float32{1, 2, 3}
-		s64_2 = []float32{2, 2, 2}
+		s64_1 = []float64{1, 2, 3}
+		s64_2 = []float64{2, 2, 2}
 	)
 
 	Add(s32_1, s32_2)
@@ -433,8 +433,8 @@ func ExampleAddNum() {
 		s32_1          = []float32{1, 2, 3}
 		num_32 float32 = 2
 
-		s64_1          = []float32{1, 2, 3}
-		num_64 float32 = 2
+		s64_1          = []float64{1, 2, 3}
+		num_64 float64 = 2
 	)
 
 	AddNum(s32_1, num_32)
@@ -524,8 +524,8 @@ func ExampleMaximumNum() {
 		s32_1          = []float32{1, 2, 3}
 		num_32 float32 = 2
 
-		s64_1          = []float32{1, 2, 3}
-		num_64 float32 = 2
+		s64_1          = []float64{1, 2, 3}
+		num_64 float64 = 2
 	)
 
 	MaximumNum(s32_1, num_32)
