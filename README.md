@@ -1,9 +1,9 @@
 # Tools-go
 
-![](https://img.shields.io/github/go-mod/go-version/ruauka/attrs-go)
-[![Coverage Status](https://codecov.io/github/ruauka/attrs-go/coverage.svg?branch=master)](https://codecov.io/gh/ruauka/attrs-go)
-[![build](https://github.com/ruauka/attrs-go/actions/workflows/pipeline.yml/badge.svg)](https://github.com/ruauka/attrs-go/actions/workflows/pipeline.yml)
-[![GoDoc](https://godoc.org/github.com/ruauka/attrs-go?status.svg)](https://godoc.org/github.com/ruauka/attrs-go)
+![](https://img.shields.io/github/go-mod/go-version/ruauka/tools-go)
+[![Coverage Status](https://codecov.io/github/ruauka/tools-go/coverage.svg?branch=master)](https://codecov.io/gh/ruauka/tools-go)
+[![build](https://github.com/ruauka/tools-go/actions/workflows/pipeline.yml/badge.svg)](https://github.com/ruauka/tools-go/actions/workflows/pipeline.yml)
+[![GoDoc](https://godoc.org/github.com/ruauka/tools-go?status.svg)](https://godoc.org/github.com/ruauka/tools-go)
 
 ## Overview
 
