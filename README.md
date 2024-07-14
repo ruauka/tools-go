@@ -36,3 +36,8 @@ go get -u github.com/ruauka/tools-go
 - [Rtime](rtime/README.md)
 - [Rslices](rslices/README.md)
 - [Asm](asm/README.md)
+
+## Allure:
+<p align="left">
+    <img src="assets/allure.png" width="600">
+</p>
