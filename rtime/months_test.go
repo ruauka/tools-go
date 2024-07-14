@@ -53,6 +53,12 @@ func TestMonths(t *testing.T) {
 			expected: 10,
 			testName: "OK. Check 6. d2 > d1. d1 has the last day of the month and a day less than a day in d2",
 		},
+		{
+			d1:       time.Date(2023, 9, 9, 0, 0, 0, 0, time.UTC),
+			d2:       time.Date(2024, 2, 29, 0, 0, 0, 0, time.UTC),
+			expected: 5,
+			testName: "OK. Leap. Check 1. d2 > d1. Days in the middle of the month",
+		},
 	}
 
 	for _, testCase := range testCases {
