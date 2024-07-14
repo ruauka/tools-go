@@ -1,6 +1,6 @@
 module github.com/ruauka/tools-go
 
-go 1.21.3
+go 1.22.2
 
 require (
 	github.com/ozontech/allure-go/pkg/allure v0.6.13
