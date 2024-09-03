@@ -64,32 +64,6 @@ func main() {
 }
 ```
 
-### Round
-Float64 and Float32 rounder to certain precision.
-```go
-package main
-
-import (
-    "fmt"
-    "reflect"
-
-    "github.com/ruauka/tools-go/attrs"
-)
-
-func main() {
-    var (
-        val32 float32 = 0.12345
-        val64 float64 = 0.12345
-    )
-	
-    res32 := attrs.Round(val32, 3)
-    fmt.Println(res32)                 // 0.123
-  
-    res64 := attrs.Round(val64, 3)
-    fmt.Println(res64)                 // 0.123
-}
-```
-
 ### SetStructAttrs
 Update current structure fields with the values of the new structure fields.
 

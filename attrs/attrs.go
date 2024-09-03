@@ -11,10 +11,9 @@ package attrs
 import (
 	"errors"
 	"fmt"
-	"math"
 	"reflect"
 
-	"golang.org/x/exp/constraints"
+	"github.com/ruauka/tools-go/rmath"
 )
 
 // float bit size.
@@ -141,22 +140,17 @@ func SetStructAttrs(curObj, newObj interface{}) error {
 	return nil
 }
 
-// Round - float64 | float32 rounder to certain precision.
-func Round[T constraints.Float](value T, precision int) T {
-	return T(math.Round(float64(value)*(math.Pow10(precision))) / math.Pow10(precision))
-}
-
 // iterRound - round any float. Private func.
 func iterRound(field reflect.Value, precision int, bitSize int) {
 	for j := 0; j < field.Len(); j++ {
 		field := field.Index(j)
 		// bitSize check
 		if bitSize == bitSize64 {
-			field.Set(reflect.ValueOf(Round(field.Float(), precision)))
+			field.Set(reflect.ValueOf(rmath.Round(field.Float(), precision)))
 			continue
 		}
 
-		field.Set(reflect.ValueOf(float32(Round(field.Float(), precision))))
+		field.Set(reflect.ValueOf(float32(rmath.Round(field.Float(), precision))))
 	}
 }
 
@@ -188,10 +182,10 @@ func RoundStructFloatFields(obj interface{}, precision int) error {
 		// simple float
 		case reflect.Float64, reflect.Float32:
 			if field.Kind() == reflect.Float64 {
-				field.Set(reflect.ValueOf(Round(field.Float(), precision)))
+				field.Set(reflect.ValueOf(rmath.Round(field.Float(), precision)))
 				break
 			}
-			field.Set(reflect.ValueOf(float32(Round(field.Float(), precision))))
+			field.Set(reflect.ValueOf(float32(rmath.Round(field.Float(), precision))))
 		// array and slice float
 		case reflect.Array, reflect.Slice:
 			if field.Len() == 0 {
