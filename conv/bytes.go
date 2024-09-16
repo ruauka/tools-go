@@ -2,7 +2,7 @@ package conv
 
 import "unsafe"
 
-// BytesToString convert []byte] to string without allocation.
+// BytesToString convert []byte to string without allocation.
 func BytesToString(b []byte) string {
 	return unsafe.String(unsafe.SliceData(b), len(b))
 }
